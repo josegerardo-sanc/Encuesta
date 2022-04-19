@@ -139,7 +139,7 @@ const Login = ({
                     {data.remember_session && (
                         <small className="d-block text-danger"><strong>sesión activa</strong> durante 15 días.</small>
                     )}
-                    
+
                     */}
                 </div>
 

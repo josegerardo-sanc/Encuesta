@@ -79,11 +79,8 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
         $user = User::where('email', $credentials['email'])->first();
-        //$token = Auth::login($user);
-        // $users = DB::table('users')
-        //             ->join('account_profiles','users.account_profile_id','=','account_profiles.id')
-        //             ->where('users.email', $credentials['email'])
-        //             ->get();
+
+
         if (!$user) {
             return response()->json([
                 'message' => 'Credenciales invalidas.',
@@ -93,7 +90,7 @@ class AuthController extends Controller
 
         /**
          * Verificar cuenta
-         *  //1=activo 2=bloqueado  3=verificarCuentaCorreo 4=RecursosSuspendidos  
+         *  //1=activo 2=bloqueado  3=verificarCuentaCorreo 4=RecursosSuspendidos
          *
          */
 
@@ -144,14 +141,13 @@ class AuthController extends Controller
             'photo' => ($user['photo'] != null && $exists) ? Storage::url($user['photo']) : null,
             'roleNames' => $user->getRoleNames(),
             'addreses' => $user['addreses']
-            //'level_account' => $user['level_account']
         ];
 
         return $userData;
     }
 
     /**
-     * Get a JWT 
+     * Get a JWT
      * @param string $token
      * @param string $user
      * @param bool $remember_session "(60minutos*24horas*7dias=10080)"
@@ -252,8 +248,8 @@ class AuthController extends Controller
     }
 
     /**
-     * 
-     * @return array 
+     *
+     * @return array
      */
 
     public function getAuthenticatedUser()
