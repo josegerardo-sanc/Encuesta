@@ -16,7 +16,7 @@ const Login = ({
     saveSesionAuth,
     fetchRequest
 }) => {
-
+    const [responseMessage, setResponseMessage] = useState({})
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState({
         'remember_session': false
@@ -60,6 +60,8 @@ const Login = ({
             'showMessage': true
         };
         const response = await fetchRequest(request);
+        setResponseMessage(response)
+        setLoading(false);
         if (response.status == 200) {
             setTimeout(() => {
                 saveSesionAuth(response.data);
@@ -83,14 +85,14 @@ const Login = ({
     return (
 
         <Fragment>
-            <AlertMessage></AlertMessage>
+            <AlertMessageSingular {...responseMessage} />
             <form className="form-horizontal" action="index">
                 <div className="form-group">
                     <label htmlFor="email">Correo electrónico</label>
                     <div className="input-group mb-0">
                         <div className="input-group-prepend">
                             <span className="input-group-text" >
-                                <i class="fas fa-envelope"></i>
+                                <i className="fas fa-envelope"></i>
                             </span>
                         </div>
                         <input

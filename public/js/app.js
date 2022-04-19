@@ -76765,17 +76765,22 @@ var Login = function Login(_ref) {
   var saveSesionAuth = _ref.saveSesionAuth,
       fetchRequest = _ref.fetchRequest;
 
-  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
       _useState2 = _slicedToArray(_useState, 2),
-      loading = _useState2[0],
-      setLoading = _useState2[1];
+      responseMessage = _useState2[0],
+      setResponseMessage = _useState2[1];
 
-  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      loading = _useState4[0],
+      setLoading = _useState4[1];
+
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({
     'remember_session': false
   }),
-      _useState4 = _slicedToArray(_useState3, 2),
-      data = _useState4[0],
-      setData = _useState4[1];
+      _useState6 = _slicedToArray(_useState5, 2),
+      data = _useState6[0],
+      setData = _useState6[1];
 
   var handleChange = function handleChange(e) {
     //console.log(e.target.type, e.target.checked);
@@ -76816,6 +76821,8 @@ var Login = function Login(_ref) {
 
             case 3:
               response = _context.sent;
+              setResponseMessage(response);
+              setLoading(false);
 
               if (response.status == 200) {
                 setTimeout(function () {
@@ -76823,7 +76830,7 @@ var Login = function Login(_ref) {
                 }, 500);
               }
 
-            case 5:
+            case 7:
             case "end":
               return _context.stop();
           }
@@ -76846,7 +76853,7 @@ var Login = function Login(_ref) {
     }
   };
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_AlertMessage__WEBPACK_IMPORTED_MODULE_7__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_8__["default"], responseMessage), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
     className: "form-horizontal",
     action: "index"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -76860,7 +76867,7 @@ var Login = function Login(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
     className: "input-group-text"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
-    "class": "fas fa-envelope"
+    className: "fas fa-envelope"
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
     name: "email",
     onChange: handleChange,
@@ -76946,20 +76953,20 @@ const mapDispatchToProps = (dispatch) => {
 var RecoveryPass = function RecoveryPass(_ref3) {
   var fetchRequest = _ref3.fetchRequest;
 
-  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
-      _useState6 = _slicedToArray(_useState5, 2),
-      responseMessage = _useState6[0],
-      setResponseMessage = _useState6[1];
-
-  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
       _useState8 = _slicedToArray(_useState7, 2),
-      loading = _useState8[0],
-      setLoading = _useState8[1];
+      responseMessage = _useState8[0],
+      setResponseMessage = _useState8[1];
 
-  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
+  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
       _useState10 = _slicedToArray(_useState9, 2),
-      data = _useState10[0],
-      setData = _useState10[1];
+      loading = _useState10[0],
+      setLoading = _useState10[1];
+
+  var _useState11 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
+      _useState12 = _slicedToArray(_useState11, 2),
+      data = _useState12[0],
+      setData = _useState12[1];
 
   var handleChange = function handleChange(e) {
     setData(_objectSpread(_objectSpread({}, data), {}, _defineProperty({}, e.target.name, e.target.value)));
