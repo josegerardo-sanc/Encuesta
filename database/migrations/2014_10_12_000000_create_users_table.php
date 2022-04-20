@@ -24,9 +24,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->text('verification_link')->nullable();
             $table->string('password')->nullable();
-            $table->string('addreses')->nullable();
             $table->integer('account_status')->default(3)->comment("1=activo 2=bloqueado  3=verificarCuentaCorreo 4=eliminado");
-            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });

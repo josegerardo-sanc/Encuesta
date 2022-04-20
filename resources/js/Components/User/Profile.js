@@ -265,13 +265,14 @@ const FormProfileConnect = ({ Auth, fetchRequest, updateDataUserAuth }) => {
                             </div>
                         </div>
 
+                        {/*
                         <div className="col-md-12">
                             <div className="form-group">
                                 <label className="control-label">{'Dirección'} <small className="text-muted">({'opcional'})</small></label>
                                 <input className="form-control" type="text" name="addreses" defaultValue={data.addreses || ""} onChange={onChangeInputData} placeholder="Dirección" />
-                                {/*<textarea className="form-control" name="addreses" value={data.addreses || ""} onChange={onChangeInputData} placeholder="Dirección"></textarea>*/}
                             </div>
                         </div>
+                       */}
 
                         <div className="mt-3 col-md-12">
                             <hr></hr>

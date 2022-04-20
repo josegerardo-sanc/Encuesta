@@ -12,8 +12,8 @@ import { pathApi, pathDashboard } from "../../env";
 
 /**imageLogoUser */
 import imageProfileDefault from './imageProfileDefault.png'
-import logoSystem from './Logo.png'
-import logoSystemLarge from './logo-fortin-large.png'
+import logoSystem from './itss.jpg'
+import logoSystemLarge from './logotec.png'
 
 const initLeftMenuCollapse = (event) => {
     event.preventDefault();
@@ -251,8 +251,8 @@ const LogoSystem = () => {
                         <span className="logo-sm">
                             <img src={logoSystem} alt="logo" height="60" />
                         </span>
-                        <span className="logo-lg bg-white">
-                            <img src={logoSystemLarge} alt="logo" height="50" className="bg-white" />
+                        <span className="logo-lg">
+                            <img src={logoSystemLarge} alt="logo" height="80" />
                         </span>
                     </a>
                 </div>

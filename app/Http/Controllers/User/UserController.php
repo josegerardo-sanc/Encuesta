@@ -77,7 +77,6 @@ class UserController extends Controller
             #variant=> type_form
             $password = $request->get('password');
             $phone = $request->get('phone');
-            $addreses = $request->get('addreses');
             $type_form = $request->get('type_form');
 
             DB::beginTransaction();
@@ -115,7 +114,6 @@ class UserController extends Controller
             $user->account_status = 1;
             $user->syncRoles($rol_name);
             #variant=> type_form
-            $user->addreses = $addreses;
             $user->phone = $phone;
             $user->save();
 
@@ -283,8 +281,8 @@ class UserController extends Controller
                 $users = $queryUser->whereRaw(
                     '(
                         users.name like ? OR
-                        users.last_name like ? OR 
-                        users.second_last_name like ? OR 
+                        users.last_name like ? OR
+                        users.second_last_name like ? OR
                         users.email like ? OR
                         users.phone like ?
                     )',
@@ -409,7 +407,6 @@ class UserController extends Controller
                 'email' => ['required', 'email', Rule::unique('users')->ignore($id_user, 'id_users')],
                 //'phone' => ['required', 'digits:10', 'sometimes', Rule::unique('users')->ignore($id_user, 'id_users')],
                 'phone' => ['required', 'digits:10'],
-                'addreses' => 'string|nullable|max:100',
             ];
 
             $validator = Validator::make($request->all(), $validator, [
@@ -419,7 +416,6 @@ class UserController extends Controller
                 'email.required' => 'El correo es obligatorio.',
                 'email.unique' => 'El correo ya está en uso.',
                 'phone.required' => 'El telefono es obligatorio.',
-                'addreses.max' => 'La dirección debe tener como máximo 255 caracteres.'
             ]);
             #validation of password
             $password = $request->get('password');
@@ -444,7 +440,6 @@ class UserController extends Controller
             $last_name = ucwords($request->get('last_name'));
             $second_last_name = ucwords($request->get('second_last_name'));
             $email = $request->get('email');
-            $addreses = $request->get('addreses');
 
 
             DB::beginTransaction();
@@ -453,9 +448,7 @@ class UserController extends Controller
             if ((!empty($password)) && (!empty($password_confirmation))) {
                 $user->password = Hash::make($password);
             }
-            if (!empty($addreses)) {
-                $user->addreses = $addreses;
-            }
+
             $user->name = $name;
             $user->last_name = $last_name;
             $user->second_last_name = $second_last_name;

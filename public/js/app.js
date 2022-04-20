@@ -77079,17 +77079,6 @@ var Footer = function Footer() {
 
 /***/ }),
 
-/***/ "./resources/js/Components/Layout/Logo.png":
-/*!*************************************************!*\
-  !*** ./resources/js/Components/Layout/Logo.png ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "/images/Logo.png?9227a82566c85c88e170c2a149fe8542";
-
-/***/ }),
-
 /***/ "./resources/js/Components/Layout/Navar.js":
 /*!*************************************************!*\
   !*** ./resources/js/Components/Layout/Navar.js ***!
@@ -77110,10 +77099,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../env */ "./resources/js/env.js");
 /* harmony import */ var _imageProfileDefault_png__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./imageProfileDefault.png */ "./resources/js/Components/Layout/imageProfileDefault.png");
 /* harmony import */ var _imageProfileDefault_png__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_imageProfileDefault_png__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _Logo_png__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Logo.png */ "./resources/js/Components/Layout/Logo.png");
-/* harmony import */ var _Logo_png__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_Logo_png__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./logo-fortin-large.png */ "./resources/js/Components/Layout/logo-fortin-large.png");
-/* harmony import */ var _logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _itss_jpg__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./itss.jpg */ "./resources/js/Components/Layout/itss.jpg");
+/* harmony import */ var _itss_jpg__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_itss_jpg__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _logotec_png__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./logotec.png */ "./resources/js/Components/Layout/logotec.png");
+/* harmony import */ var _logotec_png__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_logotec_png__WEBPACK_IMPORTED_MODULE_9__);
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -77384,16 +77373,15 @@ var LogoSystem = function LogoSystem() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
     className: "logo-sm"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
-    src: _Logo_png__WEBPACK_IMPORTED_MODULE_8___default.a,
+    src: _itss_jpg__WEBPACK_IMPORTED_MODULE_8___default.a,
     alt: "logo",
     height: "60"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
-    className: "logo-lg bg-white"
+    className: "logo-lg"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("img", {
-    src: _logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_9___default.a,
+    src: _logotec_png__WEBPACK_IMPORTED_MODULE_9___default.a,
     alt: "logo",
-    height: "50",
-    className: "bg-white"
+    height: "80"
   })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
     onClick: initLeftMenuCollapse,
     type: "button",
@@ -77591,14 +77579,25 @@ module.exports = "/images/imageProfileDefault.png?0c96f388364f16486375d4a25c03eb
 
 /***/ }),
 
-/***/ "./resources/js/Components/Layout/logo-fortin-large.png":
-/*!**************************************************************!*\
-  !*** ./resources/js/Components/Layout/logo-fortin-large.png ***!
-  \**************************************************************/
+/***/ "./resources/js/Components/Layout/itss.jpg":
+/*!*************************************************!*\
+  !*** ./resources/js/Components/Layout/itss.jpg ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/images/logo-fortin-large.png?cb5e7e7387378b9a3affb579571c219a";
+module.exports = "/images/itss.jpg?a7008a97b97fa0231c35761e9e582749";
+
+/***/ }),
+
+/***/ "./resources/js/Components/Layout/logotec.png":
+/*!****************************************************!*\
+  !*** ./resources/js/Components/Layout/logotec.png ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/logotec.png?6827654bc6e4e4678f983a70d05279f6";
 
 /***/ }),
 
@@ -78848,21 +78847,6 @@ var FormProfileConnect = function FormProfileConnect(_ref4) {
     defaultValue: data.phone || "",
     onChange: onChangeInputData,
     placeholder: "Tel\xE9fono"
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "col-md-12"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
-    className: "control-label"
-  }, 'Dirección', " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("small", {
-    className: "text-muted"
-  }, "(", 'opcional', ")")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
-    className: "form-control",
-    type: "text",
-    name: "addreses",
-    defaultValue: data.addreses || "",
-    onChange: onChangeInputData,
-    placeholder: "Direcci\xF3n"
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "mt-3 col-md-12"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
@@ -80297,7 +80281,7 @@ var RoutingUser = function RoutingUser(_ref) {
 
   var match = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useRouteMatch"])(); //console.log(match.path)
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, rolType.type == "Administrador" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
     exact: true,
     path: "".concat(match.path)
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Views_Dashboard_ViewUser__WEBPACK_IMPORTED_MODULE_4__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
@@ -80638,8 +80622,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Components_Auth_Login__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Components/Auth/Login */ "./resources/js/Components/Auth/Login.js");
 /* harmony import */ var _Helpers_Preloader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Helpers/Preloader */ "./resources/js/Helpers/Preloader.js");
-/* harmony import */ var _Components_Layout_logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Components/Layout/logo-fortin-large.png */ "./resources/js/Components/Layout/logo-fortin-large.png");
-/* harmony import */ var _Components_Layout_logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_Components_Layout_logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _Components_Layout_logotec_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Components/Layout/logotec.png */ "./resources/js/Components/Layout/logotec.png");
+/* harmony import */ var _Components_Layout_logotec_png__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_Components_Layout_logotec_png__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./style.css */ "./resources/js/Views/style.css");
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_style_css__WEBPACK_IMPORTED_MODULE_4__);
 
@@ -80672,7 +80656,11 @@ var ViewLogin = function ViewLogin() {
   }, "Inicie sesi\xF3n para continuar."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     href: "index",
     className: "logo logo-admin mt-4"
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: _Components_Layout_logotec_png__WEBPACK_IMPORTED_MODULE_3___default.a,
+    alt: "logo",
+    height: "80"
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "p-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_Auth_Login__WEBPACK_IMPORTED_MODULE_1__["default"], null))))));
 };
@@ -80695,8 +80683,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _Components_Auth_Login__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Components/Auth/Login */ "./resources/js/Components/Auth/Login.js");
 /* harmony import */ var _Helpers_Preloader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Helpers/Preloader */ "./resources/js/Helpers/Preloader.js");
-/* harmony import */ var _Components_Layout_logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Components/Layout/logo-fortin-large.png */ "./resources/js/Components/Layout/logo-fortin-large.png");
-/* harmony import */ var _Components_Layout_logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_Components_Layout_logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _Components_Layout_logotec_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Components/Layout/logotec.png */ "./resources/js/Components/Layout/logotec.png");
+/* harmony import */ var _Components_Layout_logotec_png__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_Components_Layout_logotec_png__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./style.css */ "./resources/js/Views/style.css");
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_style_css__WEBPACK_IMPORTED_MODULE_5__);
 
@@ -80722,7 +80710,10 @@ var ViewRecoveryPassword = function ViewRecoveryPassword() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "bg-login-overlay"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "position-relative"
+    className: "position-relative",
+    style: {
+      overflow: "hidden"
+    }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
     className: "text-white font-size-20"
   }, "Cambia tu contrase\xF1a"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
@@ -80731,10 +80722,9 @@ var ViewRecoveryPassword = function ViewRecoveryPassword() {
     href: "index",
     className: "logo logo-admin mt-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-    src: _Components_Layout_logo_fortin_large_png__WEBPACK_IMPORTED_MODULE_4___default.a,
+    src: _Components_Layout_logotec_png__WEBPACK_IMPORTED_MODULE_4___default.a,
     alt: "logo",
-    height: "30",
-    className: " bg-white"
+    height: "80"
   })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "p-4"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_Auth_Login__WEBPACK_IMPORTED_MODULE_2__["RecoveryPassword"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {

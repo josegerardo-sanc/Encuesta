@@ -33,9 +33,13 @@ const RoutingUser = ({ Auth }) => {
     return (
         <Fragment>
             <Switch>
-                <Route exact path={`${match.path}`}>
-                    <ViewUser />
-                </Route>
+                {
+                    rolType.type == "Administrador" && (
+                        <Route exact path={`${match.path}`}>
+                            <ViewUser />
+                        </Route>
+                    )
+                }
                 <Route path={`${match.path}/profile`}>
                     <ViewProfile />
                 </Route>
