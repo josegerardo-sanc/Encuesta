@@ -6,6 +6,7 @@ import { pathDashboard } from "../../env";
 
 /**imageLogoUser */
 import imageProfileDefault from './imageProfileDefault.png'
+
 const Sidebar = ({ Auth }) => {
 
     const { user } = Auth;
@@ -38,8 +39,8 @@ const Sidebar = ({ Auth }) => {
             case 'Administrador':
                 return (<Administrador></Administrador>)
                 break;
-            case 'Cliente':
-
+            case 'Alumno':
+                return (<Alumno />)
                 break;
             default:
                 return ''
@@ -112,7 +113,7 @@ const Administrador = () => {
                     <i className="fas fa-grip-horizontal"></i>
                     <span>Inicio</span>
                 </Navitem>
-            </li> 
+            </li>
             */}
             {/*
             <li>
@@ -127,6 +128,34 @@ const Administrador = () => {
 
 }
 
+const Alumno = () => {
+    return (
+        <Fragment>
+            {/*
+            <li>
+                <Navitem to={''}>
+                    <i className="fas fa-grip-horizontal"></i>
+                    <span>Inicio</span>
+                </Navitem>
+            </li>
+            */}
+
+            <li>
+                <Link to={`/encuesta`} className={`waves-effect`}>
+                    <i className="fas fa-tasks"></i>
+                    <span>Encuesta</span>
+                </Link>
+            </li>
+            <li>
+                <Navitem to={'/encuesta'}>
+                    <i className="fas fa-tasks"></i>
+                    <span>Encuesta panel control</span>
+                </Navitem>
+            </li>
+
+        </Fragment>
+    )
+}
 
 const Navitem = ({ to, activeOnlyWhenExact = true, children }) => {
     // console.log(typeof to)

@@ -13,12 +13,14 @@ use Spatie\Permission\Models\Role;
 use App\Http\Controllers\AuthController;
 use App\Traits\Helper;
 use App\User;
+use App\Student;
 use App\HistoryLog;
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
 //use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MessageResetPassword;
+use App\Mail\MessageVerifyAccount;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -54,7 +56,7 @@ class UserController extends Controller
 
 
     /**
-     * save users
+     * save users alumno
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -62,69 +64,58 @@ class UserController extends Controller
     {
         try {
 
-            $_validator = $this->validationUser($request);
-            if (isset($_validator['status']) && $_validator['status'] == 422) {
-                return response()->json($_validator);
+            $validUser = $this->validUser($request);
+            if (isset($validUser['status']) && $validUser['status'] == 422) {
+                return response()->json($validUser);
             }
 
-            #obligatorios globales
             $name = ucwords($request->get('name'));
             $last_name = ucwords($request->get('last_name'));
             $second_last_name = ucwords($request->get('second_last_name'));
+            $gender = $request->get('gender');
             $email = $request->get('email');
-            $typeRol = $request->get('type_rol');
-
-            #variant=> type_form
             $password = $request->get('password');
-            $phone = $request->get('phone');
-            $type_form = $request->get('type_form');
+            /**datos del alumno */
+            $matricula = $request->get('matricula');
+            $id_university_careers = $request->get('careers');
+            $semester = $request->get('semester');
+            $school_shift = $request->get('school_shift');
+
+            $confirmation_code = Str::random(40);
+            $verification_link = base64_encode("{$confirmation_code}_{$email}");
 
             DB::beginTransaction();
-
             $user = null;
-            $adtUser = null;
-
-            if ($type_form == self::USUARIO_CREATE || $type_form == self::CLIENTE_CREATE) {
-                $user = new User;
-                //$adtUser = new AdditionalInfoUser;
-                $user->password = empty($password) ? Hash::make("password") : Hash::make($password);
-            } else if ($type_form == self::USUARIO_UPDATE || $type_form == self::CLIENTE_UPDATE) {
-                #update
-                $id_user = $request->get('id_users');
-                $user = User::where('id_users', $id_user)->first();
-                //$adtUser = AdditionalInfoUser::where('id_users', $id_user)->first();
-                if (empty($user)) {
-                    return response()->json([
-                        'status' => 400,
-                        'message' => "No se encontro el usuario con ID: {$id_user}"
-                    ]);
-                }
-                /*
-                if (empty($adtUser)) {
-                    $adtUser = new AdditionalInfoUser;
-                }
-                */
-            }
-            #update type_rol=>request
-            $rol_name = $typeRol;
+            $user = new User;
             $user->name = $name;
             $user->last_name = $last_name;
             $user->second_last_name = $second_last_name;
+            $user->gender = $gender;
             $user->email = $email;
-            $user->account_status = 1;
-            $user->syncRoles($rol_name);
-            #variant=> type_form
-            $user->phone = $phone;
+            $user->account_status = 3; //1=activo 2=bloqueado  3=verificarCuentaCorreo 4=eliminado
+            $user->password = Hash::make($password);
+            $user->verification_link = $verification_link;
+            $user->syncRoles("Alumno");
             $user->save();
-
             $id_user = $user->id_users;
-            //$this->saveAdditionalUser($request, $id_user, $adtUser);
-            DB::commit();
-            $message = strpos($type_form, "create") ? "Se ha creado con éxito." : "Se ha actualizado con éxito.";
 
+            $student = new Student();
+            $student->matricula = $matricula;
+            $student->id_users = $id_user;
+            $student->id_university_careers = $id_university_careers;
+            $student->semester = $semester;
+            $student->school_shift = $school_shift;
+            $student->save();
+
+            $message = "Para activar tu cuenta Busca el correo electrónico de verificación en la bandeja de entrada o spam y haz clic en el vínculo que se muestra en el mensaje.";
+            $userData = $this->_authController->getDataUser($user);
+            $userData['verification_link'] = $verification_link;
+            Mail::to($email)->send(new MessageVerifyAccount($userData));
+            DB::commit();
             return response()->json([
                 'status' => 200,
-                'message' => $message
+                'message' => $message,
+                'user' => $user
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -136,88 +127,64 @@ class UserController extends Controller
         }
     }
 
-
-    /**
-     * validation function
-     *
-     * @param Request $request
-     * @param $validator
-     * @return array
-     */
-
-    public function validationUser(Request $request)
+    public function validUser(Request $request)
     {
 
-        $type_form = $request->get('type_form');
-        $rol_name = $request->get('type_rol');
-
-
-        $validations = [
-            'name' => 'required|string|max:50',
-            'last_name' => 'required|string|max:50',
-            'second_last_name' => 'required|string|max:50',
-            'type_form' => 'required|string'
-        ];
-
-        #insert
-        if ($type_form == self::CLIENTE_CREATE || $type_form == self::USUARIO_CREATE) {
-            $validations['email'] = 'required|string|email|unique:users|max:50';
-
-            if ($type_form == self::CLIENTE_CREATE) {
-                //$validations['phone'] = 'required|digits:10|unique:user';
-                //$validations['propiedad'] = 'required|unique:table';
-            }
-            if ($type_form == self::USUARIO_CREATE) {
-                //$validations['password'] = 'required|string|confirmed';
-            }
-        }
-        #update
-        $id_user = $request->get('id_users');
-        if ($type_form == self::CLIENTE_UPDATE || $type_form == self::USUARIO_UPDATE) {
-            $validations['email'] = ['required', 'email', 'max:50', Rule::unique('users')->ignore($id_user, 'id_users')];
-
-            if ($type_form == self::CLIENTE_UPDATE) {
-                $validations['phone'] = ['required', 'digits:10', Rule::unique('users')->ignore($id_user, 'id_users')];
-                //$validations['phone'] = 'required|digits:10';
-            }
-        }
-
-        $validator = Validator::make($request->all(), $validations, [
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:50',
+            'last_name' => 'required|max:50',
+            'second_last_name' => 'required|max:50',
+            'gender' => [
+                'required',
+                Rule::in(['Masculino', 'Femenino']),
+            ],
+            'email' => 'required|email|unique:users|max:100',
+            'password' => 'required|confirmed',
+            'matricula' => [
+                'required',
+                'regex:/[0-9]{2}/',
+                'regex:/[Ee]{1}/',
+                'regex:/[0-9]{5}/',
+            ],
+            'careers' => 'required|numeric',
+            'semester' =>
+            [
+                'required',
+                'regex:/[1-9]{1}/',
+            ],
+            'school_shift' => [
+                'required',
+                Rule::in(['Matutino', 'Vespertino']),
+            ],
+        ], [
             'name.required' => 'El nombre es obligatorio.',
             'name.max' => 'El nombre debe contener como máximo 50 caracteres.',
             'last_name.required' => 'El primer apellido es obligatorio.',
             'last_name.max' => 'El primer apellido debe contener como máximo 50 caracteres.',
             'second_last_name.required' => 'El segundo apellido es obligatorio.',
             'second_last_name.max' => 'El segundo apellido debe contener como máximo 50 caracteres.',
+            'gender.required' => 'El genero es obligatorio.',
             'email.required' => 'El correo es obligatorio.',
             'email.unique' => 'El correo ya está en uso.',
             'email.email' => 'El correo es invalido verifique el formato.',
-            'email.max' => 'El correo debe contener como máximo 50 caracteres.',
-            'phone.required' => 'El telefono es obligatorio.',
-            'phone.digits' => 'El telefono debe contener 10 digitos.',
-            //'password.required' => 'La contraseña es obligatoria.',
-            //'password.confirmed' => 'La contraseñas no coinciden.',
+            'email.max' => 'El correo debe contener como máximo 100 caracteres.',
+            //'phone.required' => 'El telefono es obligatorio.',
+            //'phone.digits' => 'El telefono debe contener 10 digitos.',
+            'password.required' => 'La contraseña es obligatoria.',
+            'password.confirmed' => 'La contraseñas no coinciden.',
+            'matricula.required' => 'La matricula es obligatorio.',
+            'matricula.regex' => 'Formato incorrecto de matricula.',
+            'careers.required' => 'Selecciona tu carrera',
+            'semester.required' => 'Selecciona tu semestre',
+            'semester.regex' => 'El semestre seleccionado no existe en la lista.',
+            'school_shift.required' => 'Selecciona tu turno',
+            'school_shift.in' => 'El turno seleccionado no existe en la lista.',
         ]);
 
-        if ($type_form == self::USUARIO_CREATE || $type_form == self::USUARIO_UPDATE) {
-            if (empty($rol_name) || $rol_name === 0) {
-                $validator->after(function ($validator) {
-                    $validator->errors()->add('rol', 'Debes seleccionar un rol');
-                });
-            }
-        } else if ($type_form == self::CLIENTE_CREATE || $type_form == self::CLIENTE_UPDATE) {
-            #se agrega el rol por default
-            $request->request->add([
-                'type_rol' => "Cliente"
-            ]);
-        }
-
-        $validator = $validator->fails() ? json_decode($validator->errors(), true) : [];
-
-        if (count($validator) > 0) {
+        if ($validator->fails()) {
             return [
                 'status' => 422,
-                'errors' => $validator
+                'errors' => $validator->errors()
             ];
         }
     }

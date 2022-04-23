@@ -139,8 +139,7 @@ class AuthController extends Controller
             'email' => $user['email'],
             'phone' => $user['phone'],
             'photo' => ($user['photo'] != null && $exists) ? Storage::url($user['photo']) : null,
-            'roleNames' => $user->getRoleNames(),
-            'addreses' => $user['addreses']
+            'roleNames' => $user->getRoleNames()
         ];
 
         return $userData;
@@ -270,22 +269,20 @@ class AuthController extends Controller
      * @param $codigoConfirmacion
      */
 
-    public function verifyAccount(Request $request, $codigoConfirmacion)
+    public function verifyAccount($codigoConfirmacion)
     {
-
         try {
+            session_start();
+
 
             $verification_link = $codigoConfirmacion;
             $codigoConfirmacion = base64_decode($codigoConfirmacion);
 
             $validateLink = strpos($codigoConfirmacion, '_');
             if ($validateLink === false) {
-                return response()->json([
-                    'status' => 400,
-                    'message' => "El enlace fue alterado, recargue la pagina (F5)"
-                ]);
+                $_SESSION['status']  = 'Este enlace fue alterado, haga click nuevamente.';
+                return redirect('/login')->with('status', 'Este enlace fue alterado, haga click nuevamente.');
             }
-
             $datos = explode('_', $codigoConfirmacion);
             $email = $datos[1];
 
@@ -295,27 +292,19 @@ class AuthController extends Controller
 
             //return response()->json([$user]);
 
-            if ($user == null)
-                return response()->json([
-                    'status' => 400,
-                    'message' => "Este enlace ya fue utilizado",
-                ]);
+            if (empty($user)) {
+                $_SESSION['status']  = 'Este enlace ya fue utilizado.';
+                return redirect('/login')->with('status', 'Este enlace ya fue utilizado.');
+            }
 
             $user->account_status = 1;
             $user->verification_link = null;
             $user->email_verified_at = now();
             $user->save();
-
-            $token = JWTAuth::fromUser($user);
-
-            $data = $this->respondWithToken($token, $user);
-            return response()->json($data);
+            $_SESSION['status']  = 'Gracias por activar tu cuenta.';
+            return redirect('/login')->with('status', 'Gracias por activar tu cuenta.');
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG,
-                'messageException' => $e->getMessage()
-            ]);
+            abort(500);
         }
     }
 

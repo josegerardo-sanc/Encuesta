@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,6 +14,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+        DB::table('university_careers')->insert([
+            ['name' => 'Ing.Informática'],
+            ['name' => 'Ing.Administración'],
+            ['name' => 'Ing.Energías Renovable'],
+            ['name' => 'Ing.Bioquímica'],
+            ['name' => 'Ing.Industrial'],
+            ['name' => 'Ing.Electromecánica'],
+            ['name' => 'Ing.Agronomía'],
+        ]);
+
         $user = App\User::insert([
             [
                 'account_status' => 1,
