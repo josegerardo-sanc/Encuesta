@@ -14,7 +14,7 @@ const ViewLogin = () => {
             <Preloader></Preloader>
             <div className="container">
                 <div className="row justify-content-center align-center centerLogin">
-                    <div className="bg-white col-lg-6 col-xl-6" style={{
+                    <div className="bg-white col-lg-6 col-xl-4" style={{
                         overflow: "hidden"
                     }}>
                         <div className="bg-login text-center">

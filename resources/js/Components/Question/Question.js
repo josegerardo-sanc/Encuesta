@@ -8,15 +8,13 @@ import Typography from '@mui/material/Typography';
 import { Stepper, Step, StepLabel, StepContent } from '@mui/material';
 import { TextField, Button } from '@mui/material';
 
-const steps = [{
-    label: 'Mis datos'
-},
-{
-    label: 'Encuesta'
-},
-{
-    label: 'Descargar QR'
-}];
+const steps = [
+    {
+        label: 'Encuesta'
+    },
+    {
+        label: 'Descargar QR'
+    }];
 
 const Question = () => {
 
@@ -53,9 +51,7 @@ const Question = () => {
                                 {step.label}
                             </StepLabel>
                             <StepContent>
-                                {activeStep == 0 && (
-                                    <UserData></UserData>
-                                )}
+
                                 {activeStep == 1 && (
                                     <QuestionPoll></QuestionPoll>
                                 )}
