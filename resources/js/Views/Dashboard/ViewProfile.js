@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 /**components */
-import { CardProfile, FormProfile } from "../../Components/User/Profile";
+import { CardProfile, FormProfile, FormProfileStudent } from "../../Components/User/Profile";
 
 /**helpers */
 import AlertMessage from "../../Helpers/AlertMessage";
@@ -21,6 +21,7 @@ const ViewProfile = () => {
             </div>
             <div className="col-md-12 col-xl-9">
                 <FormProfile></FormProfile>
+                <FormProfileStudent></FormProfileStudent>
             </div>
         </div>
     )

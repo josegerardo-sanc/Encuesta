@@ -647,4 +647,31 @@ class UserController extends Controller
             );
         }
     }
+
+    public function getDataStudent()
+    {
+        try {
+            $student = Student::where('id_users', $this->idUser)
+                ->leftJoin('university_careers', 'students.id_university_careers', '=', 'university_careers.id_university_careers')
+                ->get();
+
+            if (count($student) > 0) {
+                $student = $student[0];
+            }
+
+            return response()->json(
+                [
+                    'status' => 200,
+                    'data' => $student
+                ]
+            );
+        } catch (\Exception $e) {
+            return response()->json(
+                [
+                    'status' => 400,
+                    'message' => $this->ERROR_SERVER_MSG . ",Exception:" . $e->getMessage()
+                ]
+            );
+        }
+    }
 }

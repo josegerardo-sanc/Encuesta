@@ -136,6 +136,7 @@ class AuthController extends Controller
             'name' => $user['name'],
             'last_name' => $user['last_name'],
             'second_last_name' => $user['second_last_name'],
+            'gender' => $user['gender'],
             'email' => $user['email'],
             'phone' => $user['phone'],
             'photo' => ($user['photo'] != null && $exists) ? Storage::url($user['photo']) : null,

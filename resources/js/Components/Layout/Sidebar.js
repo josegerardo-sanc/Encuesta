@@ -139,17 +139,10 @@ const Alumno = () => {
                 </Navitem>
             </li>
             */}
-
-            <li>
-                <Link to={`/encuesta`} className={`waves-effect`}>
-                    <i className="fas fa-tasks"></i>
-                    <span>Encuesta</span>
-                </Link>
-            </li>
             <li>
                 <Navitem to={'/encuesta'}>
                     <i className="fas fa-tasks"></i>
-                    <span>Encuesta panel control</span>
+                    <span>Encuesta</span>
                 </Navitem>
             </li>
 

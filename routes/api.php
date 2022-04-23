@@ -13,6 +13,7 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix' => 'v1'], function () {
     #app/Http/Controllers/User/UserController.php
     Route::post('/updateProfile', 'User\UserController@updateProfile');
     Route::post('/updateImageProfile', 'User\UserController@updateImageProfile');
+    Route::get('/getDataStudent', 'User\UserController@getDataStudent');
     /*
     Route::get('/getRoles', 'User\UserController@getRoles');
     Route::post('/getUsers', 'User\UserController@getUsers');
