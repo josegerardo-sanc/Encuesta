@@ -152,12 +152,12 @@ const Login = ({
 
                 <div className="mt-4 d-flex justify-content-around">
                     <Link to="/recovery-password" className="text-muted">
-                        <button className="btn btn-link">
+                        <button className="btn btn-link" type="button">
                             <i className="mdi mdi-lock mr-1"></i> ¿Olvidaste tu contraseña?
                         </button>
                     </Link>
                     <Link to="/register" className="text-link font-weight-bold">
-                        <button className="btn btn-link">
+                        <button className="btn btn-link" type="button">
                             Registrate
                         </button>
                     </Link>
