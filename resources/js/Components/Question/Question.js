@@ -1,95 +1,58 @@
 import React, { Fragment } from "react";
 
-/**
- * @returns https://mui.com/material-ui/react-stepper/
- */
-import { Box, Grid } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import { Stepper, Step, StepLabel, StepContent } from '@mui/material';
-import { TextField, Button } from '@mui/material';
 
-const steps = [
-    {
-        label: 'Encuesta'
-    },
-    {
-        label: 'Descargar QR'
-    }];
+
 
 const Question = () => {
 
-    const [activeStep, setActiveStep] = React.useState(0);
-
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-
-    const handleReset = () => {
-        setActiveStep(0);
-    };
-
     return (
         <Fragment>
-            <Box sx={{ width: '100%' }}>
-                <Stepper activeStep={activeStep} orientation="vertical">
-                    {steps.map((step, index) => (
-                        <Step key={step.label}>
-                            <StepLabel
-                            /*
-                            optional={
-                                 index === 2 ? (
-                                     <Typography variant="caption">Last step</Typography>
-                                 ) : null
-                             }
-                            */
+            <div className="checkout-tabs">
+                <div className="row">
+                    <div className="col-lg-2">
+                        <div className="nav nav-pills flex-column nav-justified " id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                            <a className=" nav-link active" id="v-pills-gen-ques-tab" data-toggle="pill" href="#v-pills-gen-ques" role="tab" aria-controls="v-pills-gen-ques" aria-selected="true">
+                                {/*
+                                <i className="bx bx-question-mark d-block check-nav-icon mt-4 mb-2"></i>
+                                */}
+                                <p className="font-weight-bold mb-2 mt-2">Encuesta</p>
+                            </a>
+                            <a
+                                className="nav-link nav-fill disabled"
+                                id="v-pills-privacy-tab"
+                                data-toggle="pill"
+                                href="#v-pills-privacy"
+                                role="tab"
+                                aria-controls="v-pills-privacy"
+                                aria-selected="false"
+
                             >
-                                {step.label}
-                            </StepLabel>
-                            <StepContent>
-
-                                {activeStep == 1 && (
-                                    <QuestionPoll></QuestionPoll>
-                                )}
-                                {activeStep == 2 && (
-                                    <DowloadQr></DowloadQr>
-                                )}
-
-                                <Box sx={{ mb: 2 }}>
-                                    <div>
-                                        {
-                                            (activeStep == 0 || activeStep == 1) && (
-                                                <Button
-                                                    variant="contained"
-                                                    onClick={handleNext}
-                                                    sx={{ mt: 1, mr: 1 }}
-                                                >
-                                                    Continuar
-                                                </Button>
-                                            )
-                                        }
-                                        {
-                                            activeStep == 1 && (
-                                                <Button
-                                                    disabled={index === 0}
-                                                    onClick={handleBack}
-                                                    sx={{ mt: 1, mr: 1 }}
-                                                >
-                                                    Anterior
-                                                </Button>
-                                            )
-                                        }
+                                {/*
+                                <i className="bx bx-question-mark d-block check-nav-icon mt-4 mb-2"></i>
+                                */}
+                                <p className="font-weight-bold mb-2 mt-2">Descargar QR</p>
+                            </a>
+                        </div>
+                    </div>
+                    <div className="col-lg-10">
+                        <div className="card">
+                            <div className="card-body">
+                                <div className="tab-content" id="v-pills-tabContent">
+                                    <div className="tab-pane fade show active" id="v-pills-gen-ques" role="tabpanel" aria-labelledby="v-pills-gen-ques-tab">
+                                        <QuestionPoll></QuestionPoll>
                                     </div>
-                                </Box>
-                            </StepContent>
-                        </Step>
-                    ))}
-                </Stepper>
-            </Box>
+                                    <div className="tab-pane fade" id="v-pills-privacy" role="tabpanel" aria-labelledby="v-pills-privacy-tab">
+                                        {/**content */}
+                                        <h4 className="card-title mb-5">Descargar tu qr</h4>
+
+                                        {/**content */}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </Fragment>
     )
 }
@@ -97,57 +60,25 @@ const Question = () => {
 const UserData = () => {
     return (
         <Fragment>
-            <Box component="form">
-                <Grid container spacing={1} rowSpacing={2}>
-                    <Grid item xs={4}>
-                        <TextField
-                            fullWidth
-                            required
-                            id="name"
-                            label="Nombre"
-                        />
-                    </Grid>
-                    <Grid item xs={4}>
-                        <TextField
-                            fullWidth
-                            required
-                            id="lastName"
-                            label="Primer apellido"
-                        />
-                    </Grid>
-                    <Grid item xs={4}>
-                        <TextField
-                            fullWidth
-                            required
-                            id="secondLastName"
-                            label="Segundo apellido"
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            required
-                            id="email"
-                            label="Correo"
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            required
-                            id="phone"
-                            label="Telefono"
-                        />
-                    </Grid>
-                </Grid>
-            </Box>
+
         </Fragment>
     )
 }
 const QuestionPoll = () => {
     return (
         <Fragment>
-            preguntas
+            {/**content */}
+            <h4 className="card-title mb-5">Preguntas</h4>
+            <div className="faq-box media mb-4">
+                <div className="faq-icon mr-3">
+                    <i className="bx bx-help-circle font-size-20 text-success"></i>
+                </div>
+                <div className="media-body">
+                    <h5 className="font-size-15">Where can I get some?</h5>
+                    <p className="text-muted">To an English person</p>
+                </div>
+            </div>
+            {/**content */}
         </Fragment>
     )
 }
@@ -155,16 +86,7 @@ const QuestionPoll = () => {
 const DowloadQr = () => {
     return (
         <Fragment>
-            <Typography>
-                Descargar codigo qr
-            </Typography>
-            <Button
-                variant="contained"
-                onClick={() => { }}
-                sx={{ mt: 1, mr: 1 }}
-            >
-                Descargar
-            </Button>
+
         </Fragment>
     )
 }

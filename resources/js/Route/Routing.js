@@ -16,7 +16,7 @@ import ViewRegisterStudent from "../Views/ViewRegisterStudent";
 /**Routing */
 import RoutingUser from './RoutingUser';
 
-/** */
+/**question */
 import Question from "../Components/Question/Question";
 const Routing = () => {
     return (

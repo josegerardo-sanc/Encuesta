@@ -142,6 +142,7 @@ class UserController extends Controller
             'password' => 'required|confirmed',
             'matricula' => [
                 'required',
+                'unique:students',
                 'regex:/[0-9]{2}/',
                 'regex:/[Ee]{1}/',
                 'regex:/[0-9]{5}/',
@@ -174,6 +175,7 @@ class UserController extends Controller
             'password.confirmed' => 'La contraseñas no coinciden.',
             'matricula.required' => 'La matricula es obligatorio.',
             'matricula.regex' => 'Formato incorrecto de matricula.',
+            'matricula.unique' => 'La matricula ya está en uso.',
             'careers.required' => 'Selecciona tu carrera',
             'semester.required' => 'Selecciona tu semestre',
             'semester.regex' => 'El semestre seleccionado no existe en la lista.',

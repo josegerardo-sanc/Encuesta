@@ -1,11 +1,4 @@
 import React, { Fragment, useEffect } from 'react';
-//material ui
-import CssBaseline from '@mui/material/CssBaseline';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-
-import { Card, CardContent } from '@mui/material';
-import Typography from '@mui/material/Typography';
 
 
 //compents
@@ -25,23 +18,7 @@ const ViewQuestionnaire = () => {
 
     return (
         <Fragment>
-            <CssBaseline />
-            <Container>
-                <Grid container spacing={2} sx={{
-                    marginTop: "100px"
-                }}>
-                    <Grid item xs={12}>
-                        <Card>
-                            <CardContent>
-                                <Typography variant="h4" component="div">
-                                    Encuesta
-                                </Typography>
-                                <Question></Question>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                </Grid>
-            </Container>
+
         </Fragment >
     )
 }
