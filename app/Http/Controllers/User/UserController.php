@@ -45,6 +45,7 @@ class UserController extends Controller
         AuthController $AuthController
     ) {
         $this->_authController = $AuthController;
+        $this->idUser = null;
         if (auth()->user()) {
             $this->idUser = auth()->user()->id_users;
             $this->nameUser = auth()->user()->name;
@@ -60,6 +61,13 @@ class UserController extends Controller
     public function saveUser(Request  $request)
     {
         try {
+            /**
+             * Nota: $isAdmin==false significa que el registro es desde la parte publica
+             */
+            $isAdmin = false;
+            if (!empty($this->idUser)) {
+                $isAdmin = auth()->user()->hasRole('Administrador');
+            }
 
             $validUser = $this->validUser($request);
             if (isset($validUser['status']) && $validUser['status'] == 422) {
@@ -80,35 +88,82 @@ class UserController extends Controller
 
             $confirmation_code = Str::random(40);
             $verification_link = base64_encode("{$confirmation_code}_{$email}");
-
+            $typeRol = $request->get('type_rol');
             DB::beginTransaction();
             $user = null;
-            $user = new User;
+            $student = null;
+            $id_user = $request->get('id_users');
+            if (!empty($id_user)) {
+                $user = User::where('id_users', $id_user)->first();
+                if (empty($user)) {
+                    return response()->json([
+                        'status' => 400,
+                        'message' => "El usuario con ID ({$id_user}) no se encontro en la DB.",
+                    ]);
+                }
+
+                $id_students = null;
+                if (!empty($request->get('alumno'))) {
+                    $id_students = intval($request->get('alumno')['id_students']);
+                    $validations['matricula'] = ['required', Rule::unique('students', 'matricula')->ignore($id_students, 'id_students')];
+                    $student = Student::where('id_students', $id_students)->first();
+                    if (empty($student)) {
+                        return response()->json([
+                            'status' => 400,
+                            'message' => "El usuario con ID ({$id_user}) no tiene asociado al alumno con ID ({$id_students}) .",
+                        ]);
+                    }
+                } else {
+                    $student = new Student();
+                }
+            } else {
+                $user = new User;
+                $student = new Student();
+            }
+
+
+            $type_form = "create";
+
+            if ($request->has('type_form')) {
+                $type_form = $request->get('type_form');
+            }
+
             $user->name = $name;
             $user->last_name = $last_name;
             $user->second_last_name = $second_last_name;
             $user->gender = $gender;
             $user->email = $email;
             $user->account_status = 3; //1=activo 2=bloqueado  3=verificarCuentaCorreo 4=eliminado
-            $user->password = Hash::make($password);
+
+            if ($type_form == "create") {
+                $user->password = Hash::make($password);
+            }
+
             $user->verification_link = $verification_link;
-            $user->syncRoles("Alumno");
+            $user->syncRoles($typeRol);
             $user->save();
             $id_user = $user->id_users;
 
-            $student = new Student();
-            $student->matricula = $matricula;
-            $student->id_users = $id_user;
-            $student->id_university_careers = $id_university_careers;
-            $student->semester = $semester;
-            $student->school_shift = $school_shift;
-            $student->save();
+            if ($typeRol == "Alumno") {
+
+                $student->matricula = $matricula;
+                $student->id_users = $id_user;
+                $student->id_university_careers = $id_university_careers;
+                $student->semester = $semester;
+                $student->school_shift = $school_shift;
+                $student->save();
+            }
 
             $message = "Para activar tu cuenta Busca el correo electrónico de verificación en la bandeja de entrada o spam y haz clic en el vínculo que se muestra en el mensaje.";
             $userData = $this->_authController->getDataUser($user);
             $userData['verification_link'] = $verification_link;
-            Mail::to($email)->send(new MessageVerifyAccount($userData));
             DB::commit();
+            if ($request->has('type_form')) {
+                $message = empty($request->get('id_users')) ? "Se ha creado con éxito" : "Se ha actualizado con éxito";
+            } else {
+                Mail::to($email)->send(new MessageVerifyAccount($userData));
+            }
+
             return response()->json([
                 'status' => 200,
                 'message' => $message,
@@ -127,7 +182,16 @@ class UserController extends Controller
     public function validUser(Request $request)
     {
 
-        $validator = Validator::make($request->all(), [
+        $type_form = "create";
+
+        if ($request->has('type_form')) {
+            $type_form = $request->get('type_form');
+        }
+
+        $validations = array();
+
+
+        $validations = [
             'name' => 'required|max:50',
             'last_name' => 'required|max:50',
             'second_last_name' => 'required|max:50',
@@ -136,25 +200,65 @@ class UserController extends Controller
                 Rule::in(['Masculino', 'Femenino']),
             ],
             'email' => 'required|email|unique:users|max:100',
-            'password' => 'required|confirmed',
-            'matricula' => [
+        ];
+
+
+        if ($type_form == "create") {
+            $validations['password'] = "required|confirmed";
+        }
+
+        /**
+         * si esta logueado y es un admnistrador solicitamos el tipo de rol
+         */
+        $typeRol = $request->get('type_rol');
+
+        if (!empty($this->idUser) && auth()->user()->hasRole('Administrador')) {
+            $validations['type_rol'] = [
                 'required',
-                'unique:students',
-                'regex:/[0-9]{2}/',
-                'regex:/[Ee]{1}/',
-                'regex:/[0-9]{5}/',
-            ],
-            'careers' => 'required|numeric',
-            'semester' =>
-            [
-                'required',
-                'regex:/[1-9]{1}/',
-            ],
-            'school_shift' => [
-                'required',
-                Rule::in(['Matutino', 'Vespertino']),
-            ],
-        ], [
+                Rule::in(['Administrador', 'Alumno']),
+            ];
+        } else {
+            $typeRol = "Alumno";
+        }
+
+        if ($typeRol == "Alumno") {
+            $validations = array_merge($validations, [
+                'matricula' => [
+                    'required',
+                    'unique:students',
+                    'regex:/[0-9]{2}/',
+                    'regex:/[Ee]{1}/',
+                    'regex:/[0-9]{5}/',
+                ],
+                'careers' => 'required|numeric',
+                'semester' =>
+                [
+                    'required',
+                    'regex:/[1-9]{1}/',
+                ],
+                'school_shift' => [
+                    'required',
+                    Rule::in(['Matutino', 'Vespertino']),
+                ],
+            ]);
+        }
+
+        if ($type_form == "update") {
+            $id_user = $request->get('id_users');
+            $validations['email'] = ['required', 'email', Rule::unique('users', 'email')->ignore($id_user, 'id_users')];
+            if ($typeRol == "Alumno") {
+                $id_students = null;
+                if (!empty($request->get('alumno'))) {
+                    $id_students = intval($request->get('alumno')['id_students']);
+                    $validations['matricula'] = ['required', Rule::unique('students', 'matricula')->ignore($id_students, 'id_students')];
+                }
+            }
+        }
+
+        $messagesValidator = [
+            'type_rol.required' => 'El rol es obligatorio.',
+            'type_rol.in' => 'Seleccione un rol de la lista.',
+            'type_form.required' => 'El tipo de request es obligatorio',
             'name.required' => 'El nombre es obligatorio.',
             'name.max' => 'El nombre debe contener como máximo 50 caracteres.',
             'last_name.required' => 'El primer apellido es obligatorio.',
@@ -178,14 +282,19 @@ class UserController extends Controller
             'semester.regex' => 'El semestre seleccionado no existe en la lista.',
             'school_shift.required' => 'Selecciona tu turno',
             'school_shift.in' => 'El turno seleccionado no existe en la lista.',
-        ]);
+        ];
 
+        $validator = Validator::make($request->all(), $validations, $messagesValidator);
         if ($validator->fails()) {
             return [
                 'status' => 422,
                 'errors' => $validator->errors()
             ];
         }
+
+        $request->request->add([
+            'type_rol' => $typeRol
+        ]);
     }
 
     /**
@@ -270,6 +379,10 @@ class UserController extends Controller
                 'email' => ['required', 'email', Rule::unique('users')->ignore($id_user, 'id_users')],
                 //'phone' => ['required', 'digits:10', 'sometimes', Rule::unique('users')->ignore($id_user, 'id_users')],
                 'phone' => ['required', 'digits:10'],
+                'gender' => [
+                    'required',
+                    Rule::in(['Masculino', 'Femenino']),
+                ],
             ];
 
             $validator = Validator::make($request->all(), $validator, [
@@ -279,6 +392,7 @@ class UserController extends Controller
                 'email.required' => 'El correo es obligatorio.',
                 'email.unique' => 'El correo ya está en uso.',
                 'phone.required' => 'El telefono es obligatorio.',
+                'gender.required' => 'El genero es obligatorio.',
             ]);
             #validation of password
             $password = $request->get('password');
@@ -303,7 +417,7 @@ class UserController extends Controller
             $last_name = ucwords($request->get('last_name'));
             $second_last_name = ucwords($request->get('second_last_name'));
             $email = $request->get('email');
-
+            $gender = $request->get('gender');
 
             DB::beginTransaction();
             $user = User::where('id_users', $id_user)->first();
@@ -316,6 +430,7 @@ class UserController extends Controller
             $user->last_name = $last_name;
             $user->second_last_name = $second_last_name;
             $user->email = $email;
+            $user->gender = $gender;
             $user->save();
             DB::commit();
 
@@ -385,7 +500,7 @@ class UserController extends Controller
             $queryUser = User::query();
             $users = $queryUser->whereHas('roles', function ($query) use ($searchRol) {
                 $query->whereIn('name', $searchRol);
-            })->with(['roles'])
+            })->with(['roles', 'alumno'])
                 ->where('id_users', "!=", $id_user)
                 ->where('account_status', "!=", 4);
 
@@ -516,8 +631,8 @@ class UserController extends Controller
             if ($request->has('filter_rol')) {
                 $rol = $request->get('filter_rol');
 
-                if ($rol == "Cliente") {
-                    $nameFile = "Clientes";
+                if ($rol == "Alumno") {
+                    $nameFile = "Alumnos";
                 }
 
                 if (in_array($rol, self::ROLES)) {

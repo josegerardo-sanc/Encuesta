@@ -78,6 +78,11 @@ const QuestionPoll = () => {
                     <p className="text-muted">To an English person</p>
                 </div>
             </div>
+            <div className="mt-2 form-group">
+                <button type="button" class="btn btn-primary waves-effect waves-light">
+                    <i class="font-size-16 align-middle mr-2"></i> Continuar
+                </button>
+            </div>
             {/**content */}
         </Fragment>
     )

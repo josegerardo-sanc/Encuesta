@@ -14,12 +14,11 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix' => 'v1'], function () {
     Route::post('/updateProfile', 'User\UserController@updateProfile');
     Route::post('/updateImageProfile', 'User\UserController@updateImageProfile');
     Route::get('/getDataStudent', 'User\UserController@getDataStudent');
-    /*
+
     Route::get('/getRoles', 'User\UserController@getRoles');
     Route::post('/getUsers', 'User\UserController@getUsers');
-    Route::get('/deleteUser/{id}', 'User\UserController@deleteUser');
     Route::post('/updateAccount', 'User\UserController@updateAccount');
-    */
+    Route::get('/deleteUser/{id}', 'User\UserController@deleteUser');
 
     /**exports */
     Route::post('/exportUsers', 'User\UserController@exportUsers');

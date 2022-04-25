@@ -115,14 +115,12 @@ const Administrador = () => {
                 </Navitem>
             </li>
             */}
-            {/*
             <li>
                 <Navitem to={`/user`}>
                     <i className="fas fa-users"></i>
                     <span>Usuarios</span>
                 </Navitem>
             </li>
-            */}
         </Fragment>
     )
 

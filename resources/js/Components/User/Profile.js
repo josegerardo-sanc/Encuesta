@@ -256,6 +256,7 @@ const FormProfileConnect = ({ Auth, fetchRequest, updateDataUserAuth }) => {
                             <div>
                                 <div className="custom-control custom-radio custom-control-inline">
                                     <input
+                                        onChange={onChangeInputData}
                                         defaultValue={"Masculino"}
                                         checked={data.gender == "Masculino" ? true : false}
                                         name="gender"
@@ -264,6 +265,7 @@ const FormProfileConnect = ({ Auth, fetchRequest, updateDataUserAuth }) => {
                                 </div>
                                 <div className="custom-control custom-radio custom-control-inline">
                                     <input
+                                        onChange={onChangeInputData}
                                         defaultValue={"Femenino"}
                                         checked={data.gender == "Femenino" ? true : false}
                                         name="gender"

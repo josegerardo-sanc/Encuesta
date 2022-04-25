@@ -78147,7 +78147,11 @@ var handleCollapse = function handleCollapse(e) {
 };
 
 var Administrador = function Administrador() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Navitem, {
+    to: "/user"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-users"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Usuarios"))));
 };
 
 var Alumno = function Alumno() {
@@ -78320,7 +78324,14 @@ var QuestionPoll = function QuestionPoll() {
     className: "font-size-15"
   }, "Where can I get some?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
     className: "text-muted"
-  }, "To an English person"))));
+  }, "To an English person"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "mt-2 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    type: "button",
+    "class": "btn btn-primary waves-effect waves-light"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    "class": "font-size-16 align-middle mr-2"
+  }), " Continuar")));
 };
 
 var DowloadQr = function DowloadQr() {
@@ -78417,6 +78428,11 @@ var FormUser = function FormUser(_ref) {
       dataForm = _useState8[0],
       setDataForm = _useState8[1];
 
+  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false),
+      _useState10 = _slicedToArray(_useState9, 2),
+      showPassword = _useState10[0],
+      setShowPassword = _useState10[1];
+
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
     getRoles();
   }, []);
@@ -78440,8 +78456,17 @@ var FormUser = function FormUser(_ref) {
         _iterator.f();
       }
 
-      setDataForm(_objectSpread(_objectSpread({}, data), {}, {
+      console.log(data.alumno);
+      var careers = 0;
+
+      if (data.alumno != null) {
+        careers = data.alumno.id_university_careers;
+      }
+
+      setDataForm(_objectSpread(_objectSpread(_objectSpread({}, data), {}, {
         'type_rol': type_rol
+      }, data.alumno), {}, {
+        careers: careers
       }));
     } else {
       handlerResetData();
@@ -78495,15 +78520,16 @@ var FormUser = function FormUser(_ref) {
   }();
 
   var handle_Save = function handle_Save() {
-    handle_Save_Update("usuario_create");
+    handle_Save_Update("create");
   };
 
   var handle_Update = function handle_Update() {
-    handle_Save_Update("usuario_update");
+    handle_Save_Update("update");
   };
 
   var handlerResetData = function handlerResetData() {
     setDataForm({});
+    setResponseReq({});
   };
 
   var handle_Save_Update = /*#__PURE__*/function () {
@@ -78514,6 +78540,7 @@ var FormUser = function FormUser(_ref) {
           switch (_context2.prev = _context2.next) {
             case 0:
               setLoading(true);
+              setResponseReq({});
               data_object = Object.assign(_objectSpread(_objectSpread({}, dataForm), {}, {
                 'type_form': type
               }));
@@ -78529,17 +78556,17 @@ var FormUser = function FormUser(_ref) {
                   body: JSON.stringify(data_object)
                 }
               };
-              _context2.next = 5;
+              _context2.next = 6;
               return fetchRequest(request);
 
-            case 5:
+            case 6:
               response = _context2.sent;
               setResponseReq(response); //console.log(response);
 
               if (response.status == 200) {
                 setResponseData(response);
 
-                if (type == "usuario_create") {
+                if (type == "create") {
                   handlerResetData();
                 }
 
@@ -78549,7 +78576,7 @@ var FormUser = function FormUser(_ref) {
 
               setLoading(false);
 
-            case 9:
+            case 10:
             case "end":
               return _context2.stop();
           }
@@ -78564,6 +78591,12 @@ var FormUser = function FormUser(_ref) {
 
   var onChangeInputData = function onChangeInputData(e) {
     setDataForm(_objectSpread(_objectSpread({}, dataForm), {}, _defineProperty({}, e.target.name, e.target.value)));
+  };
+
+  var handleShowPassword = function handleShowPassword(e) {
+    setShowPassword(function (showPassword) {
+      return !showPassword;
+    });
   };
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -78607,6 +78640,37 @@ var FormUser = function FormUser(_ref) {
     value: dataForm.second_last_name || "",
     name: "second_last_name"
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "",
+    className: "form-label label_filter"
+  }, "Genero"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "custom-control custom-radio custom-control-inline"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    onChange: onChangeInputData,
+    defaultValue: "Masculino",
+    checked: dataForm.gender == "Masculino" ? true : false,
+    name: "gender",
+    type: "radio",
+    id: "_customRadioInline1",
+    className: "custom-control-input"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    className: "custom-control-label",
+    htmlFor: "_customRadioInline1"
+  }, "Masculino")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "custom-control custom-radio custom-control-inline"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    onChange: onChangeInputData,
+    defaultValue: "Femenino",
+    checked: dataForm.gender == "Femenino" ? true : false,
+    name: "gender",
+    type: "radio",
+    id: "_customRadioInline2",
+    className: "custom-control-input"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    className: "custom-control-label",
+    htmlFor: "_customRadioInline2"
+  }, "Femenino")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-md-12"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "form-group"
@@ -78618,7 +78682,73 @@ var FormUser = function FormUser(_ref) {
     type: "email",
     value: dataForm.email || "",
     name: "email"
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  }))), !dataForm.hasOwnProperty('id_users') && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12 form-row form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "password"
+  }, "Contrase\xF1a"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group mb-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group-prepend"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    className: "input-group-text"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "fas fa-key"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    name: "password",
+    onChange: onChangeInputData,
+    value: dataForm.password || "",
+    type: "".concat(showPassword ? "text" : "password"),
+    className: "form-control",
+    id: "password",
+    placeholder: "Ingresa tu clave",
+    autoComplete: "current-password",
+    maxLength: 100
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group-append",
+    onClick: handleShowPassword
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    className: "input-group-text",
+    id: "span_icon"
+  }, showPassword ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "far fa-eye"
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "far fa-eye-slash"
+  }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "password_confirmation"
+  }, "Confirma contrase\xF1a"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group mb-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group-prepend"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    className: "input-group-text"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "fas fa-key"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    name: "password_confirmation",
+    onChange: onChangeInputData,
+    value: dataForm.password_confirmation || "",
+    type: "".concat(showPassword ? "text" : "password"),
+    className: "form-control",
+    id: "password_confirmation",
+    placeholder: "Confirma tu clave",
+    autoComplete: "current-password",
+    maxLength: 100
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group-append",
+    onClick: handleShowPassword
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
+    className: "input-group-text",
+    id: "span_icon"
+  }, showPassword ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "far fa-eye"
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "far fa-eye-slash"
+  })))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-md-12"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "form-group"
@@ -78639,6 +78769,11 @@ var FormUser = function FormUser(_ref) {
       key: item.id
     }, item.name);
   })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12"
+  }, dataForm.type_rol == "Alumno" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(FormStudent, {
+    onChangeInputData: onChangeInputData,
+    dataForm: dataForm
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-sm-12 d-flex justify-content-end"
   }, data.hasOwnProperty('id_users') ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
     disabled: loading,
@@ -78657,8 +78792,179 @@ var FormUser = function FormUser(_ref) {
   }, 'Guardar')))));
 };
 
-var mapStateToProps = function mapStateToProps(_ref4) {
-  var Auth = _ref4.Auth;
+var Form_Student = function Form_Student(_ref4) {
+  var fetchRequest = _ref4.fetchRequest,
+      Auth = _ref4.Auth,
+      onChangeInputData = _ref4.onChangeInputData,
+      dataForm = _ref4.dataForm;
+  var token = Auth.token;
+
+  var _useState11 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
+      _useState12 = _slicedToArray(_useState11, 2),
+      careers = _useState12[0],
+      setCareers = _useState12[1];
+
+  var _useState13 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
+      _useState14 = _slicedToArray(_useState13, 2),
+      responseMessage = _useState14[0],
+      setResponseMessage = _useState14[1];
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    handleGetCareers();
+  }, []);
+  /**get careers */
+
+  var handleGetCareers = /*#__PURE__*/function () {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+      var request, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              request = {
+                'url': "".concat(_env__WEBPACK_IMPORTED_MODULE_6__["pathApi"], "/getCareers"),
+                'request': {
+                  method: 'GET',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer ".concat(token)
+                  }
+                },
+                "showLoader": false
+              };
+              _context3.next = 3;
+              return fetchRequest(request);
+
+            case 3:
+              response = _context3.sent;
+
+              if (response.status != 200) {
+                setResponseMessage(response);
+              }
+
+              setCareers(response.data);
+
+            case 6:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }));
+
+    return function handleGetCareers() {
+      return _ref5.apply(this, arguments);
+    };
+  }();
+
+  var validMatricula = function validMatricula(e) {
+    var expreg = /^[0-9]{2}[Ee]{1}[0-9]{5}$/;
+
+    if (e.target.value != "") {
+      e.target.value = e.target.value.toUpperCase();
+    }
+
+    if (expreg.test(e.target.value)) {
+      e.target.classList.remove('is-invalid'); //e.target.classList.add('is-valid')
+    } else {
+      e.target.classList.add('is-invalid');
+    } //console.log(e.target.value, "matricula valid" + expreg.test(e.target.value))
+
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "form-row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_4__["default"], responseMessage), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "matricula"
+  }, "Matricula"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "input-group mb-0"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    name: "matricula",
+    onChange: onChangeInputData,
+    value: dataForm.matricula || "",
+    onKeyUp: function onKeyUp(e) {
+      return validMatricula(e);
+    },
+    type: "text",
+    className: "form-control",
+    maxLength: 8,
+    placeholder: "Matricula"
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "careers"
+  }, "Carrera"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
+    className: "form-control",
+    name: "careers",
+    id: "careers",
+    onChange: onChangeInputData,
+    value: dataForm.careers || 0
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: 0,
+    disabled: true
+  }, 'Selecciona tu carrera'), careers.map(function (item) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+      key: item.id_university_careers,
+      value: item.id_university_careers
+    }, item.name);
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "semester",
+    className: "form-label label_filter"
+  }, "Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
+    name: "semester",
+    onChange: onChangeInputData,
+    value: dataForm.semester || 0,
+    id: "semester",
+    className: "form-control"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "0",
+    disabled: true
+  }, "Selecciona tu semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "1"
+  }, "1\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "2"
+  }, "2\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "3"
+  }, "3\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "4"
+  }, "4\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "5"
+  }, "5\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "6"
+  }, "6\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "7"
+  }, "7\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "8"
+  }, "8\xBA Semestre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "9"
+  }, "9\xBA Semestre"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-6 form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    htmlFor: "school_shift",
+    className: "form-label label_filter"
+  }, "Turno"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
+    name: "school_shift",
+    onChange: onChangeInputData,
+    value: dataForm.school_shift || 0,
+    id: "school_shift",
+    className: "form-control"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "0",
+    disabled: true
+  }, "Selecciona una opci\xF3n"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "Matutino"
+  }, "Matutino"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: "Vespertino"
+  }, "Vespertino")))));
+};
+
+var mapStateToProps = function mapStateToProps(_ref6) {
+  var Auth = _ref6.Auth;
   return {
     Auth: Auth
   };
@@ -78672,6 +78978,7 @@ FormUser.propTypes = {
   handleUpdateTable: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.func.isRequired,
   setResponseData: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.func.isRequired
 };
+var FormStudent = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(Form_Student);
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(FormUser));
 
 /***/ }),
@@ -79560,6 +79867,7 @@ var FormProfileConnect = function FormProfileConnect(_ref4) {
   }, "Genero"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "custom-control custom-radio custom-control-inline"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    onChange: onChangeInputData,
     defaultValue: "Masculino",
     checked: data.gender == "Masculino" ? true : false,
     name: "gender",
@@ -79572,6 +79880,7 @@ var FormProfileConnect = function FormProfileConnect(_ref4) {
   }, "Masculino")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "custom-control custom-radio custom-control-inline"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    onChange: onChangeInputData,
     defaultValue: "Femenino",
     checked: data.gender == "Femenino" ? true : false,
     name: "gender",
@@ -81455,31 +81764,34 @@ var ViewUser = function ViewUser(_ref) {
 
   var handleExportUsers = /*#__PURE__*/function () {
     var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var request, response;
+      var typeRol, request, response;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              typeRol = document.getElementById('typeRol').value;
               request = {
                 'url': "".concat(_env__WEBPACK_IMPORTED_MODULE_7__["pathApi"], "/exportUsers"),
                 'request': {
                   method: 'POST',
                   headers: {
                     //'Accept': 'application/json',
-                    //'Accept': 'multipart/form-data',
-                    // 'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                     'Authorization': "Bearer ".concat(token)
-                  }
+                  },
+                  body: JSON.stringify({
+                    'filter_rol': typeRol
+                  })
                 },
                 'file_blob': true
               };
-              _context.next = 3;
+              _context.next = 4;
               return fetchRequest(request);
 
-            case 3:
+            case 4:
               response = _context.sent;
 
-            case 4:
+            case 5:
             case "end":
               return _context.stop();
           }
