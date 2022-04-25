@@ -26,11 +26,8 @@ use Illuminate\Support\Str;
 class UserController extends Controller
 {
     use Helper;
-    const CLIENTE_CREATE = "cliente_create";
-    const USUARIO_CREATE = "usuario_create";
-    const CLIENTE_UPDATE = "cliente_update";
-    const USUARIO_UPDATE = "usuario_update";
-    const ROLES = ['Cliente', 'Administrador'];
+
+    const ROLES = ['Alumno', 'Administrador'];
 
 
     /**
@@ -192,109 +189,6 @@ class UserController extends Controller
     }
 
     /**
-     *  list of roles.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getRoles()
-    {
-        try {
-            $all_roles_in_database = Role::all();
-            return response()->json([
-                'status' => 200,
-                'data' => $all_roles_in_database
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e
-            ]);
-        }
-    }
-
-    /**
-     * list users
-     * @param \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function getUsers(Request $request)
-    {
-        $id_user = $this->idUser;
-
-        $numberPage = abs($request->get('numberPage') ?? 1);
-        $endRow =     abs($request->get('endRow') ?? 10);
-        $startRow = (($numberPage * $endRow) - $endRow);
-        $totalRows = 0;
-
-        try {
-            $typeRol = $request->get('typeRol');
-            $searchRoles = self::ROLES;
-            $searchRol = array();
-
-            if (in_array($typeRol, $searchRoles)) {
-                $searchRol = [$typeRol];
-            } else if ($typeRol == "all" || $typeRol == 0) {
-                $searchRol = $searchRoles;
-            }
-            /**https://spatie.be/index.php/docs/laravel-permission/v5/basic-usage/basic-usage */
-
-            $queryUser = User::query();
-            $users = $queryUser->whereHas('roles', function ($query) use ($searchRol) {
-                $query->whereIn('name', $searchRol);
-            })->with(['roles'])
-                ->where('id_users', "!=", $id_user)
-                ->where('account_status', "!=", 4);
-
-            if (!empty($request->get('search'))) {
-                $search = $request->get('search');
-                $users = $queryUser->whereRaw(
-                    '(
-                        users.name like ? OR
-                        users.last_name like ? OR
-                        users.second_last_name like ? OR
-                        users.email like ? OR
-                        users.phone like ?
-                    )',
-                    array("%{$search}%", "%{$search}%", "%{$search}%", "%{$search}%", "%{$search}%")
-                );
-                /*
-                return response()->json([
-                    'status' => 500,
-                    'eloquent' => $users->getQuery()->toSql()
-                ]);*/
-            }
-            $totalRows = $users->count();
-
-            if ($startRow > $totalRows) {
-                /**reinicia la paginacion */
-                $startRow = 0;
-                $numberPage = 1;
-            }
-
-            $users = $queryUser
-                ->orderBy('id_users', 'desc')
-                ->offset($startRow)
-                ->limit($endRow)
-                ->get();
-
-            return response()->json([
-                'status' => 200,
-                'message' => 'Lista de usuarios.',
-                'data' => $users,
-                'numberPage' => $numberPage,
-                'startRow' => $startRow,
-                'endRow' => $endRow,
-                'totalRows' => $totalRows,
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 400,
-                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
-            ]);
-        }
-    }
-
-    /**
      * Update photo of user
      *
      * @param Request $request
@@ -441,7 +335,108 @@ class UserController extends Controller
         }
     }
 
+    /**
+     *  list of roles.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRoles()
+    {
+        try {
+            $all_roles_in_database = Role::all();
+            return response()->json([
+                'status' => 200,
+                'data' => $all_roles_in_database
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 400,
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e
+            ]);
+        }
+    }
 
+    /**
+     * list users
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getUsers(Request $request)
+    {
+        $id_user = $this->idUser;
+
+        $numberPage = abs($request->get('numberPage') ?? 1);
+        $endRow =     abs($request->get('endRow') ?? 10);
+        $startRow = (($numberPage * $endRow) - $endRow);
+        $totalRows = 0;
+
+        try {
+            $typeRol = $request->get('typeRol');
+            $searchRoles = self::ROLES;
+            $searchRol = array();
+
+            if (in_array($typeRol, $searchRoles)) {
+                $searchRol = [$typeRol];
+            } else if ($typeRol == "all" || $typeRol == 0) {
+                $searchRol = $searchRoles;
+            }
+            /**https://spatie.be/index.php/docs/laravel-permission/v5/basic-usage/basic-usage */
+
+            $queryUser = User::query();
+            $users = $queryUser->whereHas('roles', function ($query) use ($searchRol) {
+                $query->whereIn('name', $searchRol);
+            })->with(['roles'])
+                ->where('id_users', "!=", $id_user)
+                ->where('account_status', "!=", 4);
+
+            if (!empty($request->get('search'))) {
+                $search = $request->get('search');
+                $users = $queryUser->whereRaw(
+                    '(
+                        users.name like ? OR
+                        users.last_name like ? OR
+                        users.second_last_name like ? OR
+                        users.email like ? OR
+                        users.phone like ?
+                    )',
+                    array("%{$search}%", "%{$search}%", "%{$search}%", "%{$search}%", "%{$search}%")
+                );
+                /*
+                return response()->json([
+                    'status' => 500,
+                    'eloquent' => $users->getQuery()->toSql()
+                ]);*/
+            }
+            $totalRows = $users->count();
+
+            if ($startRow > $totalRows) {
+                /**reinicia la paginacion */
+                $startRow = 0;
+                $numberPage = 1;
+            }
+
+            $users = $queryUser
+                ->orderBy('id_users', 'desc')
+                ->offset($startRow)
+                ->limit($endRow)
+                ->get();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Lista de usuarios.',
+                'data' => $users,
+                'numberPage' => $numberPage,
+                'startRow' => $startRow,
+                'endRow' => $endRow,
+                'totalRows' => $totalRows,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 400,
+                'message' => $this->ERROR_SERVER_MSG . " Exception: " . $e->getMessage()
+            ]);
+        }
+    }
 
     /**
      * eliminar cuenta
