@@ -14,9 +14,15 @@ export const fetchRequest = (state) => {
 
 const downloadFile = (request, response) => {
 
-    const header = request.headers.get('Content-Disposition');
-    const parts = header.split(';');
-    let filename = parts[1].split('=')[1];
+
+    let filename = "";
+    try {
+        const header = request.headers.get('Content-Disposition');
+        const parts = header.split(';');
+        filename = parts[1].split('=')[1];
+    } catch (error) {
+        filename = "archivo";
+    }
 
 
     var data = response;
@@ -27,13 +33,17 @@ const downloadFile = (request, response) => {
         return;
     }
     const blobURL = window.URL.createObjectURL(blob);
+
     const tempLink = document.createElement('a');
     tempLink.style.display = 'none';
     tempLink.href = blobURL;
+    tempLink.setAttribute('target', '_blank');
+    /*
     tempLink.setAttribute('download', filename);
     if (typeof tempLink.download === 'undefined') {
         tempLink.setAttribute('target', '_blank');
     }
+    */
     document.body.appendChild(tempLink);
     tempLink.click();
     document.body.removeChild(tempLink);

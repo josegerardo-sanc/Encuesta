@@ -22,6 +22,9 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix' => 'v1'], function () {
 
     /**exports */
     Route::post('/exportUsers', 'User\UserController@exportUsers');
+
+    Route::post('/answerQuestion', 'SurveyRecordsController@answerQuestion');
+    Route::get('/printQr/{id}', 'SurveyRecordsController@printQr');
 });
 Route::prefix('v1')->group(function () {
     Route::post('/authenticate', 'AuthController@authenticate');

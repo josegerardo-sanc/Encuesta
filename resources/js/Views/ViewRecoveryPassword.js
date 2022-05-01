@@ -8,6 +8,13 @@ import logoItss from '../Components/Layout/logotec.png'
 import './style.css'
 const ViewRecoveryPassword = () => {
 
+    useEffect(() => {
+        return () => {
+            document.querySelector('body').style.backgroundColor = "rgb(218, 214, 214, 0.4)"
+        }
+    }, [])
+
+
     return (
         <Fragment>
             <Preloader></Preloader>

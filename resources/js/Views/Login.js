@@ -8,7 +8,11 @@ import logoItss from '../Components/Layout/logotec.png'
 
 import './style.css'
 const ViewLogin = () => {
-
+    useEffect(() => {
+        return () => {
+            document.querySelector('body').style.backgroundColor = "rgb(218, 214, 214, 0.4)"
+        }
+    }, [])
     return (
         <Fragment>
             <Preloader></Preloader>

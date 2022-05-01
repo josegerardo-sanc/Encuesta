@@ -124,8 +124,19 @@ class UserController extends Controller
 
             $type_form = "create";
 
+            /**
+             * type_form viene solo del lado del panel de control
+             * entonces siempre que venha un request de tipo create o update el status de la cuenta es activo
+             */
             if ($request->has('type_form')) {
                 $type_form = $request->get('type_form');
+                $user->account_status = 1;
+            } else {
+                $user->account_status = 3; //1=activo 2=bloqueado  3=verificarCuentaCorreo 4=eliminado
+            }
+
+            if ($type_form == "create") {
+                $user->password = Hash::make($password);
             }
 
             $user->name = $name;
@@ -133,11 +144,6 @@ class UserController extends Controller
             $user->second_last_name = $second_last_name;
             $user->gender = $gender;
             $user->email = $email;
-            $user->account_status = 3; //1=activo 2=bloqueado  3=verificarCuentaCorreo 4=eliminado
-
-            if ($type_form == "create") {
-                $user->password = Hash::make($password);
-            }
 
             $user->verification_link = $verification_link;
             $user->syncRoles($typeRol);
@@ -145,13 +151,19 @@ class UserController extends Controller
             $id_user = $user->id_users;
 
             if ($typeRol == "Alumno") {
-
                 $student->matricula = $matricula;
                 $student->id_users = $id_user;
                 $student->id_university_careers = $id_university_careers;
                 $student->semester = $semester;
                 $student->school_shift = $school_shift;
                 $student->save();
+            } else {
+
+                /**
+                 * solo aplica cuando es administrador se verifica que no hayga sido usuario tipo alumno
+                 * si fue usuario tipo alumno borramos la informacion escola "matricula,carrera etc"
+                 */
+                $this->destroyDataUserStudent($id_user);
             }
 
             $message = "Para activar tu cuenta Busca el correo electrónico de verificación en la bandeja de entrada o spam y haz clic en el vínculo que se muestra en el mensaje.";
@@ -295,6 +307,15 @@ class UserController extends Controller
         $request->request->add([
             'type_rol' => $typeRol
         ]);
+    }
+
+
+    public function destroyDataUserStudent($id)
+    {
+        $student = Student::where('id_users', $id)->first();
+        if (!empty($student)) {
+            Student::where('id_users', $id)->delete();
+        }
     }
 
     /**

@@ -78156,10 +78156,14 @@ var Administrador = function Administrador() {
 
 var Alumno = function Alumno() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Navitem, {
-    to: '/encuesta'
+    to: '/question'
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
     className: "fas fa-tasks"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Encuesta"))));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Encuesta"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Navitem, {
+    to: '/surveyQuestion'
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-tasks"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Historial"))));
 };
 
 var Navitem = function Navitem(_ref2) {
@@ -78245,100 +78249,298 @@ module.exports = "/images/logotec.png?6827654bc6e4e4678f983a70d05279f6";
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _Redux_Actions_fetchRequest__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Redux/Actions/fetchRequest */ "./resources/js/Redux/Actions/fetchRequest.js");
+/* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../env */ "./resources/js/env.js");
+/* harmony import */ var _Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Helpers/AlertMessageSingular */ "./resources/js/Helpers/AlertMessageSingular.js");
 
 
-var Question = function Question() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+/**actions */
+
+
+/**config */
+
+
+/**helper */
+
+
+
+var Question = function Question(_ref) {
+  var Auth = _ref.Auth,
+      fetchRequest = _ref.fetchRequest;
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({}),
+      _useState2 = _slicedToArray(_useState, 2),
+      responseMessage = _useState2[0],
+      setResponseMessage = _useState2[1];
+
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(1),
+      _useState4 = _slicedToArray(_useState3, 2),
+      step = _useState4[0],
+      setStep = _useState4[1];
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "checkout-tabs"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "row"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-lg-2"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "nav nav-pills flex-column nav-justified ",
     id: "v-pills-tab",
     role: "tablist",
     "aria-orientation": "vertical"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-    className: " nav-link active",
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("a", {
+    className: "".concat(step == 1 ? "active" : "disabled", " nav-link "),
     id: "v-pills-gen-ques-tab",
     "data-toggle": "pill",
     href: "#v-pills-gen-ques",
     role: "tab",
     "aria-controls": "v-pills-gen-ques",
     "aria-selected": "true"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", {
     className: "font-weight-bold mb-2 mt-2"
-  }, "Encuesta")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-    className: "nav-link nav-fill disabled",
-    id: "v-pills-privacy-tab",
-    "data-toggle": "pill",
-    href: "#v-pills-privacy",
-    role: "tab",
-    "aria-controls": "v-pills-privacy",
-    "aria-selected": "false"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-    className: "font-weight-bold mb-2 mt-2"
-  }, "Descargar QR")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-lg-10"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, "Encuesta")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_5__["default"], responseMessage), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "card"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "card-body"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "tab-content",
     id: "v-pills-tabContent"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "tab-pane fade show active",
     id: "v-pills-gen-ques",
     role: "tabpanel",
     "aria-labelledby": "v-pills-gen-ques-tab"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(QuestionPoll, null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "tab-pane fade",
-    id: "v-pills-privacy",
-    role: "tabpanel",
-    "aria-labelledby": "v-pills-privacy-tab"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
-    className: "card-title mb-5"
-  }, "Descargar tu qr")))))))));
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(QuestionPollR, {
+    setResponseMessage: setResponseMessage
+  })))))))));
 };
 
 var UserData = function UserData() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null);
 };
 
-var QuestionPoll = function QuestionPoll() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
-    className: "card-title mb-5"
-  }, "Preguntas"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+var QuestionPoll = function QuestionPoll(_ref2) {
+  var Auth = _ref2.Auth,
+      fetchRequest = _ref2.fetchRequest,
+      setResponseMessage = _ref2.setResponseMessage;
+  var token = Auth.token;
+
+  var handle_save = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var fiebre, sintomas, percentaje, data, request, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              setResponseMessage({});
+              fiebre = document.querySelector('input[name=fiebre]:checked');
+              sintomas = document.querySelector('input[name=sintomas]:checked');
+
+              if (!(fiebre === null || sintomas === null)) {
+                _context.next = 6;
+                break;
+              }
+
+              alert("favor de contestar todas las preguntas");
+              return _context.abrupt("return", false);
+
+            case 6:
+              percentaje = parseInt(fiebre.value) + parseInt(sintomas.value);
+              data = {
+                'percentaje': percentaje
+              };
+              request = {
+                'url': "".concat(_env__WEBPACK_IMPORTED_MODULE_4__["pathApi"], "/answerQuestion"),
+                'request': {
+                  method: 'POST',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer ".concat(token)
+                  },
+                  body: JSON.stringify(data)
+                }
+              };
+              _context.next = 11;
+              return fetchRequest(request);
+
+            case 11:
+              response = _context.sent;
+              setResponseMessage(response);
+
+              if (response.status != 200) {} else {
+                if (response.insert) {
+                  hanldeOPenFile(response.data.id_survey_records);
+                }
+              }
+
+            case 14:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function handle_save() {
+      return _ref3.apply(this, arguments);
+    };
+  }();
+
+  var hanldeOPenFile = /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(idSurvey) {
+      var requestqR, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              requestqR = {
+                'url': "".concat(_env__WEBPACK_IMPORTED_MODULE_4__["pathApi"], "/printQr/").concat(idSurvey),
+                'request': {
+                  method: 'GET',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer ".concat(token)
+                  }
+                },
+                'file_blob': true
+              };
+              _context2.next = 3;
+              return fetchRequest(requestqR);
+
+            case 3:
+              response = _context2.sent;
+              console.log(response);
+
+            case 5:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    return function hanldeOPenFile(_x) {
+      return _ref4.apply(this, arguments);
+    };
+  }();
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h3", {
+    className: "mb-4"
+  }, "A continuaci\xF3n responda a las pregunta."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "faq-box media mb-4"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "faq-icon mr-3"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "bx bx-help-circle font-size-20 text-success"
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "bx bx-help-circle font-size-20 text-info"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "media-body"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h5", {
     className: "font-size-15"
-  }, "Where can I get some?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-    className: "text-muted"
-  }, "To an English person"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, 'FIEBRE > 37,7ºC ¿Presenta fiebre de más de 37,7ºC?'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "custom-control custom-radio custom-control-inline p-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    type: "radio",
+    id: "_customRadioInline1",
+    name: "fiebre",
+    className: "custom-control-input",
+    value: 0
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    className: "custom-control-label",
+    htmlFor: "_customRadioInline1"
+  }, " si")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "custom-control custom-radio custom-control-inline p-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    type: "radio",
+    id: "__customRadioInline1",
+    name: "fiebre",
+    className: "custom-control-input",
+    value: 50
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    className: "custom-control-label",
+    htmlFor: "__customRadioInline1"
+  }, " no")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "faq-box media mb-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "faq-icon mr-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "bx bx-help-circle font-size-20 text-info"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "media-body"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h5", {
+    className: "font-size-15"
+  }, 'PRESENCIA DE SÍNTOMAS'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "custom-control custom-radio custom-control-inline p-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    type: "radio",
+    id: "_customRadioInline2",
+    name: "sintomas",
+    className: "custom-control-input",
+    value: 0
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    className: "custom-control-label",
+    htmlFor: "_customRadioInline2"
+  }, "si")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "custom-control custom-radio custom-control-inline p-3"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+    type: "radio",
+    id: "__customRadioInline2",
+    name: "sintomas",
+    className: "custom-control-input",
+    value: 50
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+    className: "custom-control-label",
+    htmlFor: "__customRadioInline2"
+  }, "no")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "mt-2 form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+    onClick: handle_save,
     type: "button",
-    "class": "btn btn-primary waves-effect waves-light"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    "class": "font-size-16 align-middle mr-2"
+    className: "btn btn-primary waves-effect waves-light"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+    className: "font-size-16 align-middle mr-2"
   }), " Continuar")));
 };
 
-var DowloadQr = function DowloadQr() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null);
+var mapStateToProps = function mapStateToProps(_ref5) {
+  var Auth = _ref5.Auth;
+  return {
+    Auth: Auth
+  };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Question);
+var mapDispatchToProps = {
+  fetchRequest: _Redux_Actions_fetchRequest__WEBPACK_IMPORTED_MODULE_3__["fetchRequest"]
+};
+var QuestionPollR = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(QuestionPoll);
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(Question));
 
 /***/ }),
 
@@ -80893,9 +81095,16 @@ var fetchRequest = function fetchRequest(state) {
 };
 
 var downloadFile = function downloadFile(request, response) {
-  var header = request.headers.get('Content-Disposition');
-  var parts = header.split(';');
-  var filename = parts[1].split('=')[1];
+  var filename = "";
+
+  try {
+    var header = request.headers.get('Content-Disposition');
+    var parts = header.split(';');
+    filename = parts[1].split('=')[1];
+  } catch (error) {
+    filename = "archivo";
+  }
+
   var data = response;
   var blob = new Blob([data], {
     type: data.type || 'application/octet-stream'
@@ -80910,11 +81119,13 @@ var downloadFile = function downloadFile(request, response) {
   var tempLink = document.createElement('a');
   tempLink.style.display = 'none';
   tempLink.href = blobURL;
+  tempLink.setAttribute('target', '_blank');
+  /*
   tempLink.setAttribute('download', filename);
-
   if (typeof tempLink.download === 'undefined') {
-    tempLink.setAttribute('target', '_blank');
+      tempLink.setAttribute('target', '_blank');
   }
+  */
 
   document.body.appendChild(tempLink);
   tempLink.click();
@@ -81405,7 +81616,7 @@ var Routing = function Routing() {
     path: "".concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathDashboard"], "/user"),
     component: _RoutingUser__WEBPACK_IMPORTED_MODULE_10__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(AllowAccessAuthenticated, {
-    path: "".concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathDashboard"], "/encuesta"),
+    path: "".concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathDashboard"], "/question"),
     component: _Components_Question_Question__WEBPACK_IMPORTED_MODULE_11__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "*",
@@ -81879,6 +82090,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var ViewLogin = function ViewLogin() {
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    return function () {
+      document.querySelector('body').style.backgroundColor = "rgb(218, 214, 214, 0.4)";
+    };
+  }, []);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Helpers_Preloader__WEBPACK_IMPORTED_MODULE_2__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -81971,6 +82187,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var ViewRecoveryPassword = function ViewRecoveryPassword() {
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    return function () {
+      document.querySelector('body').style.backgroundColor = "rgb(218, 214, 214, 0.4)";
+    };
+  }, []);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Helpers_Preloader__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row justify-content-center align-center centerLogin"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {

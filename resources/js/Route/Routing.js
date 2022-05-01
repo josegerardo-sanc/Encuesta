@@ -30,7 +30,7 @@ const Routing = () => {
                 <DenyAccessAuthenticated path="/recovery-password" component={ViewRecoveryPassword} />
                 <AllowAccessAuthenticated exact path={pathDashboard} component={() => <h1>Panel administrativo</h1>} />
                 <AllowAccessAuthenticated path={`${pathDashboard}/user`} component={RoutingUser} />
-                <AllowAccessAuthenticated path={`${pathDashboard}/encuesta`} component={Question} />
+                <AllowAccessAuthenticated path={`${pathDashboard}/question`} component={Question} />
                 <Route path="*" component={NoMatch} />
             </Switch>
         </BrowserRouter>
