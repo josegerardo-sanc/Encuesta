@@ -11,26 +11,22 @@ import Dashboard from "../Views/Dashboard";
 import Login from '../Views/Login'
 import ViewRecoveryPassword from '../Views/ViewRecoveryPassword'
 import NoMatch from "../Helpers/NoMatch";
-import ViewQuestionnaire from "../Views/ViewQuestionnaire";
 import ViewRegisterStudent from "../Views/ViewRegisterStudent";
 /**Routing */
 import RoutingUser from './RoutingUser';
-
-/**question */
-import Question from "../Components/Question/Question";
+import RoutingQuestion from "./RoutingQuestion";
 const Routing = () => {
     return (
 
         <BrowserRouter>
             <Switch>
-                <Route exact path="/encuesta" component={ViewQuestionnaire} />
                 <DenyAccessAuthenticated exact path="/" component={Login} />
                 <DenyAccessAuthenticated path="/login" component={Login} />
                 <DenyAccessAuthenticated path="/register" component={ViewRegisterStudent} />
                 <DenyAccessAuthenticated path="/recovery-password" component={ViewRecoveryPassword} />
                 <AllowAccessAuthenticated exact path={pathDashboard} component={() => <h1>Panel administrativo</h1>} />
                 <AllowAccessAuthenticated path={`${pathDashboard}/user`} component={RoutingUser} />
-                <AllowAccessAuthenticated path={`${pathDashboard}/question`} component={Question} />
+                <AllowAccessAuthenticated path={`${pathDashboard}/question`} component={RoutingQuestion} />
                 <Route path="*" component={NoMatch} />
             </Switch>
         </BrowserRouter>

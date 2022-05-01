@@ -144,7 +144,7 @@ const Alumno = () => {
                 </Navitem>
             </li>
             <li>
-                <Navitem to={'/surveyQuestion'}>
+                <Navitem to={'/question/history'}>
                     <i className="fas fa-tasks"></i>
                     <span>Historial</span>
                 </Navitem>

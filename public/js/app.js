@@ -78160,7 +78160,7 @@ var Alumno = function Alumno() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
     className: "fas fa-tasks"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Encuesta"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Navitem, {
-    to: '/surveyQuestion'
+    to: '/question/history'
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
     className: "fas fa-tasks"
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Historial"))));
@@ -78324,7 +78324,9 @@ var Question = function Question(_ref) {
     className: "font-weight-bold mb-2 mt-2"
   }, "Encuesta")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "col-sm-12"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_5__["default"], responseMessage), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "mb-2 mt-2"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_5__["default"], responseMessage)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "card"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "card-body"
@@ -78341,14 +78343,13 @@ var Question = function Question(_ref) {
   })))))))));
 };
 
-var UserData = function UserData() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null);
-};
-
 var QuestionPoll = function QuestionPoll(_ref2) {
   var Auth = _ref2.Auth,
       fetchRequest = _ref2.fetchRequest,
       setResponseMessage = _ref2.setResponseMessage;
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    document.getElementById('title_module').innerText = "Encuesta";
+  }, []);
   var token = Auth.token;
 
   var handle_save = /*#__PURE__*/function () {
@@ -78541,6 +78542,306 @@ var mapDispatchToProps = {
 };
 var QuestionPollR = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(QuestionPoll);
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(Question));
+
+/***/ }),
+
+/***/ "./resources/js/Components/Question/QuestionHistory.js":
+/*!*************************************************************!*\
+  !*** ./resources/js/Components/Question/QuestionHistory.js ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react_js_pagination__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-js-pagination */ "./node_modules/react-js-pagination/dist/Pagination.js");
+/* harmony import */ var react_js_pagination__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_js_pagination__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _Redux_Actions_fetchRequest__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Redux/Actions/fetchRequest */ "./resources/js/Redux/Actions/fetchRequest.js");
+/* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../env */ "./resources/js/env.js");
+/* harmony import */ var _Helpers_AlertMessageSingular__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Helpers/AlertMessageSingular */ "./resources/js/Helpers/AlertMessageSingular.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+/**actions */
+
+
+/**config */
+
+
+/**helper */
+
+
+
+var QuestionHistory = function QuestionHistory(_ref) {
+  var fetchRequest = _ref.fetchRequest,
+      Auth = _ref.Auth;
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    document.getElementById('title_module').innerText = "Historial de encuesta";
+  }, []);
+  var token = Auth.token;
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      questionRecords = _useState2[0],
+      setQuestionRecords = _useState2[1]; //table
+
+
+  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(1),
+      _useState4 = _slicedToArray(_useState3, 2),
+      activePage = _useState4[0],
+      setActivePage = _useState4[1];
+
+  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(10),
+      _useState6 = _slicedToArray(_useState5, 2),
+      itemsCountPerPage = _useState6[0],
+      setItemsCountPerPage = _useState6[1];
+
+  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(0),
+      _useState8 = _slicedToArray(_useState7, 2),
+      totalItemsCount = _useState8[0],
+      setTotalItemsCount = _useState8[1];
+
+  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])({
+    'startRow': 0,
+    'endRow': 0
+  }),
+      _useState10 = _slicedToArray(_useState9, 2),
+      dataPagination = _useState10[0],
+      setDataPagination = _useState10[1];
+
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
+    getQuestionRecords();
+  }, []);
+
+  var getQuestionRecords = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var numberPage,
+          itemsCountPerPage,
+          request,
+          response,
+          _args = arguments;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              numberPage = _args.length > 0 && _args[0] !== undefined ? _args[0] : 1;
+              itemsCountPerPage = _args.length > 1 && _args[1] !== undefined ? _args[1] : 10;
+              setQuestionRecords([]);
+              request = {
+                'url': "".concat(_env__WEBPACK_IMPORTED_MODULE_5__["pathApi"], "/getQuestionHistory"),
+                'request': {
+                  method: 'POST',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer ".concat(token)
+                  },
+                  body: JSON.stringify({
+                    'numberPage': numberPage,
+                    'endRow': itemsCountPerPage
+                  })
+                }
+              };
+              _context.next = 6;
+              return fetchRequest(request);
+
+            case 6:
+              response = _context.sent;
+
+              //console.log(response);
+              if (response.status == 200) {
+                setQuestionRecords(response.data); //table
+
+                setTotalItemsCount(response.totalRows);
+                setActivePage(response.numberPage);
+                setDataPagination({
+                  'startRow': response.startRow,
+                  'endRow': response.endRow,
+                  'totalRows': response.totalRows,
+                  'numberPage': response.numberPage
+                });
+              }
+
+            case 8:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function getQuestionRecords() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
+
+  var handlePaintTable = function handlePaintTable() {
+    var startRow = dataPagination.startRow;
+    var rows = questionRecords.map(function (item, key) {
+      startRow = startRow + 1;
+      var colorCircle = item.percentage < 80 ? "red" : "green";
+      var row = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", {
+        key: item.id_survey_records
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, startRow), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+        className: "fas fa-circle",
+        style: {
+          color: colorCircle
+        }
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, item.created_at), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        disabled: item.percentage < 80 ? true : false,
+        title: "Descargar",
+        onClick: function onClick(e) {
+          return hanldeOPenFile(item.id_survey_records);
+        },
+        type: "button",
+        className: "m-1 btn btn-link waves-effect waves-light"
+      }, "Descargar")));
+      return row;
+    });
+    return rows;
+  };
+
+  var handleNumberPage = function handleNumberPage(numberPage) {
+    //console.log("numberPage" + numberPage, "itemsCountPerPage" + itemsCountPerPage)
+    getQuestionRecords(numberPage, itemsCountPerPage);
+  };
+
+  var handleItemsCountPerPage = function handleItemsCountPerPage(_ref3) {
+    var target = _ref3.target;
+    setItemsCountPerPage(target.value); //console.log("numberPage" + activePage, "itemsCountPerPage" + target.value)
+
+    getQuestionRecords(activePage, target.value);
+  };
+
+  var hanldeOPenFile = /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(idSurvey) {
+      var requestqR, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              requestqR = {
+                'url': "".concat(_env__WEBPACK_IMPORTED_MODULE_5__["pathApi"], "/printQr/").concat(idSurvey),
+                'request': {
+                  method: 'GET',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer ".concat(token)
+                  }
+                },
+                'file_blob': true
+              };
+              _context2.next = 3;
+              return fetchRequest(requestqR);
+
+            case 3:
+              response = _context2.sent;
+              console.log(response);
+
+            case 5:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    return function hanldeOPenFile(_x) {
+      return _ref4.apply(this, arguments);
+    };
+  }();
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "card-body"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "table-responsive mb-0",
+    "data-pattern": "priority-columns"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", {
+    id: "table_data",
+    className: "table table-striped table-bordered",
+    style: {
+      width: '100%'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("thead", {
+    style: {
+      backgroundColor: "#1864ab",
+      color: 'white'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, '#'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, 'status'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, 'Fecha registro'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, 'Acciones'))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, handlePaintTable()))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "form-row"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12 col-md-6 d-flex align-items-center form-control border-0"
+  }, "Mostrando ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("strong", {
+    className: "mr-1 ml-1"
+  }, dataPagination.startRow + 1), " a", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
+    className: "mr-1 ml-1 form-control",
+    value: itemsCountPerPage,
+    onChange: handleItemsCountPerPage,
+    style: {
+      width: '80px'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: 10
+  }, "10"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: 30
+  }, "30"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: 50
+  }, "50"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+    value: 100
+  }, "100")), "de", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("strong", {
+    className: "mr-1 ml-1"
+  }, totalItemsCount), "registros"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+    className: "col-sm-12 col-md-6 row justify-content-end"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_js_pagination__WEBPACK_IMPORTED_MODULE_3___default.a, {
+    linkClass: "page-link",
+    itemClass: "page-item",
+    activePage: activePage,
+    itemsCountPerPage: parseInt(itemsCountPerPage),
+    totalItemsCount: totalItemsCount,
+    pageRangeDisplayed: 5,
+    onChange: function onChange(numberPage) {
+      return handleNumberPage(numberPage);
+    }
+  }))))));
+};
+
+var mapStateToProps = function mapStateToProps(_ref5) {
+  var Auth = _ref5.Auth;
+  return {
+    Auth: Auth
+  };
+};
+
+var mapDispatchToProps = {
+  fetchRequest: _Redux_Actions_fetchRequest__WEBPACK_IMPORTED_MODULE_4__["fetchRequest"]
+};
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(QuestionHistory));
 
 /***/ }),
 
@@ -81554,10 +81855,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Views_Login__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Views/Login */ "./resources/js/Views/Login.js");
 /* harmony import */ var _Views_ViewRecoveryPassword__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Views/ViewRecoveryPassword */ "./resources/js/Views/ViewRecoveryPassword.js");
 /* harmony import */ var _Helpers_NoMatch__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Helpers/NoMatch */ "./resources/js/Helpers/NoMatch.js");
-/* harmony import */ var _Views_ViewQuestionnaire__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Views/ViewQuestionnaire */ "./resources/js/Views/ViewQuestionnaire.js");
-/* harmony import */ var _Views_ViewRegisterStudent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../Views/ViewRegisterStudent */ "./resources/js/Views/ViewRegisterStudent.js");
-/* harmony import */ var _RoutingUser__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./RoutingUser */ "./resources/js/Route/RoutingUser.js");
-/* harmony import */ var _Components_Question_Question__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../Components/Question/Question */ "./resources/js/Components/Question/Question.js");
+/* harmony import */ var _Views_ViewRegisterStudent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Views/ViewRegisterStudent */ "./resources/js/Views/ViewRegisterStudent.js");
+/* harmony import */ var _RoutingUser__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./RoutingUser */ "./resources/js/Route/RoutingUser.js");
+/* harmony import */ var _RoutingQuestion__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./RoutingQuestion */ "./resources/js/Route/RoutingQuestion.js");
 var _excluded = ["component", "Auth"],
     _excluded2 = ["component", "Auth"];
 
@@ -81580,20 +81880,13 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 
 
-
 /**Routing */
 
-
-/**question */
 
 
 
 var Routing = function Routing() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-    exact: true,
-    path: "/encuesta",
-    component: _Views_ViewQuestionnaire__WEBPACK_IMPORTED_MODULE_8__["default"]
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(DenyAccessAuthenticated, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(DenyAccessAuthenticated, {
     exact: true,
     path: "/",
     component: _Views_Login__WEBPACK_IMPORTED_MODULE_5__["default"]
@@ -81602,7 +81895,7 @@ var Routing = function Routing() {
     component: _Views_Login__WEBPACK_IMPORTED_MODULE_5__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(DenyAccessAuthenticated, {
     path: "/register",
-    component: _Views_ViewRegisterStudent__WEBPACK_IMPORTED_MODULE_9__["default"]
+    component: _Views_ViewRegisterStudent__WEBPACK_IMPORTED_MODULE_8__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(DenyAccessAuthenticated, {
     path: "/recovery-password",
     component: _Views_ViewRecoveryPassword__WEBPACK_IMPORTED_MODULE_6__["default"]
@@ -81614,10 +81907,10 @@ var Routing = function Routing() {
     }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(AllowAccessAuthenticated, {
     path: "".concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathDashboard"], "/user"),
-    component: _RoutingUser__WEBPACK_IMPORTED_MODULE_10__["default"]
+    component: _RoutingUser__WEBPACK_IMPORTED_MODULE_9__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(AllowAccessAuthenticated, {
     path: "".concat(_env__WEBPACK_IMPORTED_MODULE_3__["pathDashboard"], "/question"),
-    component: _Components_Question_Question__WEBPACK_IMPORTED_MODULE_11__["default"]
+    component: _RoutingQuestion__WEBPACK_IMPORTED_MODULE_10__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "*",
     component: _Helpers_NoMatch__WEBPACK_IMPORTED_MODULE_7__["default"]
@@ -81674,6 +81967,83 @@ var DenyAccessAuth = function DenyAccessAuth(props) {
 var DenyAccessAuthenticated = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, null)(DenyAccessAuth);
 var AllowAccessAuthenticated = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps)(AllowAccessAuth);
 /* harmony default export */ __webpack_exports__["default"] = (Routing);
+
+/***/ }),
+
+/***/ "./resources/js/Route/RoutingQuestion.js":
+/*!***********************************************!*\
+  !*** ./resources/js/Route/RoutingQuestion.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _Components_Question_Question__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Components/Question/Question */ "./resources/js/Components/Question/Question.js");
+/* harmony import */ var _Components_Question_QuestionHistory__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Components/Question/QuestionHistory */ "./resources/js/Components/Question/QuestionHistory.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+/**views */
+
+
+
+/*#{ `${RutaDashboard}/question` }*/
+
+var RoutingQuestion = function RoutingQuestion(_ref) {
+  var Auth = _ref.Auth;
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({
+    'type': null
+  }),
+      _useState2 = _slicedToArray(_useState, 2),
+      rolType = _useState2[0],
+      setRolType = _useState2[1];
+
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    if (Auth.user) {
+      setRolType({
+        'type': Auth.user.roleNames[0]
+      });
+    }
+  }, [Auth]); //console.log(props)
+
+  var match = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["useRouteMatch"])(); //console.log(match.path)
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Switch"], null, rolType.type == "Alumno" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+    exact: true,
+    path: "".concat(match.path)
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_Question_Question__WEBPACK_IMPORTED_MODULE_3__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+    path: "".concat(match.path, "/history")
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_Question_QuestionHistory__WEBPACK_IMPORTED_MODULE_4__["default"], null)))));
+};
+/*connection with redux */
+
+
+var mapStateToProps = function mapStateToProps(_ref2) {
+  var Auth = _ref2.Auth;
+  return {
+    Auth: Auth
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps)(RoutingQuestion));
 
 /***/ }),
 
@@ -82126,36 +82496,6 @@ var ViewLogin = function ViewLogin() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (ViewLogin);
-
-/***/ }),
-
-/***/ "./resources/js/Views/ViewQuestionnaire.js":
-/*!*************************************************!*\
-  !*** ./resources/js/Views/ViewQuestionnaire.js ***!
-  \*************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Components_Question_Question__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Components/Question/Question */ "./resources/js/Components/Question/Question.js");
- //compents
-
-
-
-var ViewQuestionnaire = function ViewQuestionnaire() {
-  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    document.querySelectorAll('body')[0].style.backgroundColor = "#D2DE9D";
-    return function () {
-      document.querySelectorAll('body')[0].style.backgroundColor = "#ffff";
-    };
-  }, []);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null);
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (ViewQuestionnaire);
 
 /***/ }),
 

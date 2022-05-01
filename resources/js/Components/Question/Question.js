@@ -31,7 +31,9 @@ const Question = ({
                         </div>
                     </div>
                     <div className="col-sm-12">
-                        <AlertMessageSingular {...responseMessage}></AlertMessageSingular>
+                        <div className="mb-2 mt-2">
+                            <AlertMessageSingular {...responseMessage}></AlertMessageSingular>
+                        </div>
                         <div className="card">
                             <div className="card-body">
                                 <div className="tab-content" id="v-pills-tabContent">
@@ -50,13 +52,7 @@ const Question = ({
     )
 }
 
-const UserData = () => {
-    return (
-        <Fragment>
 
-        </Fragment>
-    )
-}
 
 const QuestionPoll = ({
     Auth,
@@ -64,7 +60,9 @@ const QuestionPoll = ({
     setResponseMessage
 }) => {
 
-
+    useEffect(() => {
+        document.getElementById('title_module').innerText = "Encuesta";
+    }, [])
     const { token } = Auth;
 
     const handle_save = async () => {
