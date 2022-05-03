@@ -205,4 +205,142 @@ class SurveyRecordsController extends Controller
             ]);
         }
     }
+
+    /**
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getQuestionHistoryStudent(Request $request)
+    {
+        $numberPage = abs($request->get('numberPage') ?? 1);
+        $endRow =     abs($request->get('endRow') ?? 10);
+        $startRow = (($numberPage * $endRow) - $endRow);
+        $totalRows = 0;
+
+        try {
+            $idUser = $this->idUser;
+            $totalRows = SurveyRecords::groupBy('id_users')
+                ->select('id_users')
+                ->get();
+
+            $totalRows = count($totalRows);
+
+            if ($startRow > $totalRows) {
+                /**reinicia la paginacion */
+                $startRow = 0;
+                $numberPage = 1;
+            }
+
+            $queryRecords = SurveyRecords::query();
+            $_surveyRecords = $queryRecords
+                ->leftJoin('users', 'survey_records.id_users', '=', 'users.id_users')
+                ->leftJoin('students', 'users.id_users', '=', 'students.id_users')
+                ->leftJoin('university_careers', 'university_careers.id_university_careers', '=', 'students.id_university_careers')
+                ->select(
+                    'users.name',
+                    'users.last_name',
+                    'users.second_last_name',
+                    DB::raw('CONCAT(users.name," ",users.last_name," ",users.second_last_name) AS full_name'),
+                    'university_careers.name as carrera',
+                    'students.matricula',
+                    'students.semester',
+                    'students.school_shift',
+                    'students.id_students',
+                    'survey_records.percentage',
+                    'survey_records.id_users',
+                    DB::raw('COUNT(survey_records.id_users) AS totalRows'),
+                    DB::raw('MAX(survey_records.created_at) AS last_registration_date')
+                )
+                ->groupBy('survey_records.id_users')
+                ->offset($startRow)
+                ->limit($endRow)
+                ->get();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Lista de resultados.',
+                'data' => $_surveyRecords,
+                'numberPage' => $numberPage,
+                'startRow' => $startRow,
+                'endRow' => $endRow,
+                'totalRows' => $totalRows,
+                'configPercentaje' => $this->configPercentaje
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => $this->ERROR_SERVER_MSG . " ,Exception:" . $e->getMessage(),
+                'status' => 400
+            ]);
+        }
+    }
+
+
+    public function getHistoryStudent(Request $request)
+    {
+        $numberPage = abs($request->get('numberPage') ?? 1);
+        $endRow =     abs($request->get('endRow') ?? 10);
+        $startRow = (($numberPage * $endRow) - $endRow);
+        $totalRows = 0;
+
+        try {
+            $idUser = $request->get('id_users');
+
+            $totalRows = SurveyRecords::where('survey_records.id_users', $idUser)->count();
+
+            if ($startRow > $totalRows) {
+                /**reinicia la paginacion */
+                $startRow = 0;
+                $numberPage = 1;
+            }
+
+            $_surveyRecords = SurveyRecords::where('id_users', $idUser)
+                ->orderBy('id_survey_records', 'desc')
+                ->offset($startRow)
+                ->limit($endRow)
+                ->get();
+
+            $dataUser = SurveyRecords::leftJoin('users', 'survey_records.id_users', '=', 'users.id_users')
+                ->leftJoin('students', 'users.id_users', '=', 'students.id_users')
+                ->leftJoin('university_careers', 'university_careers.id_university_careers', '=', 'students.id_university_careers')
+                ->select(
+                    'users.name',
+                    'users.last_name',
+                    'users.second_last_name',
+                    DB::raw('CONCAT(users.name," ",users.last_name," ",users.second_last_name) AS full_name'),
+                    'university_careers.name as carrera',
+                    'students.matricula',
+                    'students.semester',
+                    'students.school_shift',
+                    'students.id_students',
+                    'survey_records.percentage',
+                    'survey_records.id_users',
+                )
+                ->where('survey_records.id_users', $idUser)
+                ->groupBy('survey_records.id_users')
+                ->get();
+
+            if (count($dataUser) > 0) {
+                $dataUser = $dataUser[0];
+            }
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Lista de resultados.',
+                'data' => $_surveyRecords,
+                'dataUser' => $dataUser,
+                'numberPage' => $numberPage,
+                'startRow' => $startRow,
+                'endRow' => $endRow,
+                'totalRows' => $totalRows,
+                'configPercentaje' => $this->configPercentaje
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => $this->ERROR_SERVER_MSG . " ,Exception:" . $e->getMessage(),
+                'status' => 400
+            ]);
+        }
+    }
 }

@@ -11,6 +11,9 @@ import { connect } from "react-redux";
 /**views */
 import Question from "../Components/Question/Question";
 import QuestionHistory from "../Components/Question/QuestionHistory";
+
+
+import QuestionHistoryAdmin, { QuestionHistorySingular } from "../Components/Question/QuestionHistoryAdmin";
 /*#{ `${RutaDashboard}/question` }*/
 const RoutingQuestion = ({ Auth }) => {
 
@@ -41,6 +44,16 @@ const RoutingQuestion = ({ Auth }) => {
                             <Route path={`${match.path}/history`}>
                                 <QuestionHistory />
                             </Route>
+                        </Fragment>
+                    )
+                }
+                {
+                    rolType.type == "Administrador" && (
+                        <Fragment>
+                            <Route exact path={`${match.path}/suvery-records`}>
+                                <QuestionHistoryAdmin />
+                            </Route>
+                            <Route path={`${match.path}/suvery-records/:id`} component={QuestionHistorySingular} />
                         </Fragment>
                     )
                 }

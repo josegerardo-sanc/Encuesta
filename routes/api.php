@@ -24,6 +24,8 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix' => 'v1'], function () {
     Route::post('/exportUsers', 'User\UserController@exportUsers');
 
     Route::post('/getQuestionHistory', 'SurveyRecordsController@getQuestionHistory');
+    Route::post('/getQuestionHistoryStudent', 'SurveyRecordsController@getQuestionHistoryStudent');
+    Route::post('/getHistoryStudent', 'SurveyRecordsController@getHistoryStudent');
     Route::post('/answerQuestion', 'SurveyRecordsController@answerQuestion');
     Route::get('/printQr/{id}', 'SurveyRecordsController@printQr');
 });

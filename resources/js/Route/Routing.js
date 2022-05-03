@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
@@ -24,7 +24,7 @@ const Routing = () => {
                 <DenyAccessAuthenticated path="/login" component={Login} />
                 <DenyAccessAuthenticated path="/register" component={ViewRegisterStudent} />
                 <DenyAccessAuthenticated path="/recovery-password" component={ViewRecoveryPassword} />
-                <AllowAccessAuthenticated exact path={pathDashboard} component={() => <h1>Panel administrativo</h1>} />
+                <AllowAccessAuthenticated exact path={pathDashboard} component={Graficas} />
                 <AllowAccessAuthenticated path={`${pathDashboard}/user`} component={RoutingUser} />
                 <AllowAccessAuthenticated path={`${pathDashboard}/question`} component={RoutingQuestion} />
                 <Route path="*" component={NoMatch} />
@@ -33,6 +33,21 @@ const Routing = () => {
     )
 }
 
+
+const Graficas = () => {
+
+    useEffect(() => {
+        document.getElementById('title_module').innerText = "Graficas";
+    }, [])
+
+    return (
+        <div className="card">
+            <div className="card-body">
+                Graficas
+            </div>
+        </div>
+    )
+}
 
 /*connection with redux */
 const mapStateToProps = ({ Auth }) => {
@@ -45,6 +60,9 @@ const mapStateToProps = ({ Auth }) => {
 const AllowAccessAuth = (props) => {
     const { component: Component, Auth, ...rest } = props;
     if (Auth.auth) {
+        if (Auth.user.roleNames[0] == "Alumno" && props.path == pathDashboard) {
+            return <Redirect to={`${pathDashboard}/question`} />
+        }
         return (
             <Fragment>
                 <Route {...rest}

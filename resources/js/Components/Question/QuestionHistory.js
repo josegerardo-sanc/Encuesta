@@ -90,8 +90,14 @@ const QuestionHistory = ({
                         disabled={(item.percentage < 80 ? true : false)}
                         title="Descargar"
                         onClick={(e) => hanldeOPenFile(item.id_survey_records)}
+                        type="button" className="m-1 btn btn-primary waves-effect waves-light">
+                        Descargar QR
+                    </button>
+                    <button
+                        title="Descargar"
+                        onClick={(e) => alert("En desarrollo.")}
                         type="button" className="m-1 btn btn-link waves-effect waves-light">
-                        Descargar
+                        Ver encuesta
                     </button>
                 </td>
             </tr>;

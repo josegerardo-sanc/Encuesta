@@ -121,6 +121,12 @@ const Administrador = () => {
                     <span>Usuarios</span>
                 </Navitem>
             </li>
+            <li>
+                <Navitem to={'/question/suvery-records'}>
+                    <i className="fas fa-history"></i>
+                    <span>Historial</span>
+                </Navitem>
+            </li>
         </Fragment>
     )
 
@@ -145,7 +151,7 @@ const Alumno = () => {
             </li>
             <li>
                 <Navitem to={'/question/history'}>
-                    <i className="fas fa-tasks"></i>
+                    <i className="fas fa-history"></i>
                     <span>Historial</span>
                 </Navitem>
             </li>
