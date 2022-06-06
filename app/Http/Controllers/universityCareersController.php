@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\universityCareers;
+use App\Questions;
 
 class universityCareersController extends Controller
 {
@@ -19,6 +20,21 @@ class universityCareersController extends Controller
         try {
             //process
             $data = universityCareers::orderBy('id_university_careers', 'desc')->get();
+            return response()->json(['data' => $data, 'status' => 200]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $this->ERROR_SERVER_MSG . " ," . $e->getMessage(),
+                'status' => 400
+            ]);
+        }
+    }
+
+
+    public function getQuestion()
+    {
+        try {
+            //process
+            $data = Questions::orderBy('id', 'asc')->get();
             return response()->json(['data' => $data, 'status' => 200]);
         } catch (\Exception $e) {
             return response()->json([

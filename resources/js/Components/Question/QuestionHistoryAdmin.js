@@ -187,7 +187,6 @@ const QuestionHistory_Singular = (props) => {
         if (id != undefined && id != null) {
             getQuestionRecords(id);
         }
-
     }, [])
 
     const { token } = Auth;
@@ -202,7 +201,7 @@ const QuestionHistory_Singular = (props) => {
         'endRow': 0
     });
     const [dataUser, setDataUser] = useState({})
-
+    const [questions, setQuestions] = useState([]);
     const getQuestionRecords = async (numberPage = 1, itemsCountPerPage = 10) => {
 
         setQuestionRecords([]);
@@ -255,11 +254,12 @@ const QuestionHistory_Singular = (props) => {
                         color: colorCircle
                     }}></i>
                 </td>
+                <td><strong>{item.percentage}%</strong></td>
                 <td>{item.created_at}</td>
                 <td>
                     <button
                         title="Descargar"
-                        onClick={(e) => alert("En desarrollo.")}
+                        onClick={(e) => hanldeAnswers(e, item.id_survey_records)}
                         type="button" className="m-1 btn btn-link waves-effect waves-light">
                         Ver encuesta
                     </button>
@@ -281,6 +281,32 @@ const QuestionHistory_Singular = (props) => {
         getQuestionRecords(activePage, target.value)
     }
 
+
+    const hanldeAnswers = async (e, id_survey_records) => {
+        e.preventDefault();
+
+        let request = {
+            'url': `${pathApi}/getAnswersUser`,
+            'request': {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    'id_survey_records': id_survey_records
+                })
+            }
+        };
+        let response = await fetchRequest(request);
+        if (response.status == 200) {
+            setQuestions(response.data);
+            window.$('#content_answersUser').modal('show');
+        }
+
+    }
+
     return (<Fragment>
         <div className="card">
             <div className="card-body">
@@ -296,6 +322,7 @@ const QuestionHistory_Singular = (props) => {
                             <tr>
                                 <th>{'#'}</th>
                                 <th>{'status'}</th>
+                                <th>{'Porcentaje'}</th>
                                 <th>{'Fecha registro'}</th>
                                 <th>{'Acciones'}</th>
                             </tr>
@@ -336,9 +363,157 @@ const QuestionHistory_Singular = (props) => {
                 </div>
             </div>
         </div>
+
+        <div className="modal fade" id="content_answersUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div className="modal-dialog modal-xl" role="document">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLongTitle">Encuesta</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div className="modal-body">
+                        <Question questions={questions} />
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </Fragment>)
 }
 
+
+const Question = ({
+    questions
+}) => {
+
+    let contador = 0;
+    const pintarPreguntas = (step) => {
+        let rows = questions.map((item, index) => {
+            if (item.type == (step + 1)) {
+                contador = contador + 1;
+                return (
+                    <div className="faq-box media mb-4" key={item.id}>
+                        <div className="faq-icon mr-3">
+                            <i className="bx bx-help-circle font-size-20 text-info"></i>
+                        </div>
+                        <div className="media-body">
+                            <h5 className="font-size-15">{contador}.¿{item.question}?</h5>
+                            {typeHtml(item)}
+                            {item.selected_date == "yes" && (
+                                <input className="mt-2 form-group form-control d-none" type="date" name="selected_date" id="selected_date" />
+                            )}
+                        </div>
+                    </div>
+                )
+            } else {
+                contador = 0;
+            }
+        })
+        return rows;
+
+    }
+
+
+    const typeHtml = (quest) => {
+
+        if (quest.input == "selected") {
+            return (
+                <select
+                    disabled
+                    onChange={handleChangeInputDate}
+                    class="form-control" name={quest.id} key={quest.id} defaultValue="0" data-selected_date={quest.selected_date}>
+                    <option>{quest.answers}</option>
+                </select>
+            )
+        } else {
+            return <input disabled className="form-control" type="text" name={quest.id} key={quest.id} placeholder="" value={quest.answers || ""} />
+        }
+    }
+
+    const handleChangeInputDate = (e) => {
+
+        let is_date = e.target.getAttribute('data-selected_date');
+        let opcion = e.target.value;
+        if (is_date == "yes") {
+            if (opcion == "si") {
+                document.querySelector('#selected_date').classList.remove('d-none');
+                document.querySelector('#selected_date').classList.add('d-block');
+            } else {
+                document.querySelector('#selected_date').classList.remove('d-block');
+                document.querySelector('#selected_date').classList.add('d-none');
+                document.querySelector('#selected_date').value = "";
+            }
+        }
+    }
+
+    const title = ["Antecedentes", "Diagnostico", "Contacto Social", "Factores de riesgo"];
+    const [step, setStep] = useState(0);
+    const handlesetStep = (index) => {
+        setStep(index)
+    }
+
+    return (
+        <Fragment>
+            <div className="card">
+                <div className="card-body">
+                    <div className="row">
+                        <div className="col-sm-12 col-md-2">
+                            <div className="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                {title.map((item, index) => (
+                                    <Fragment key={index}>
+                                        <a
+                                            key={index}
+                                            className={index == step ? "nav-link active" : "nav-link"}
+                                            id="v-pills-settings-tab"
+                                            data-toggle="pill"
+                                            onClick={() => handlesetStep(index)}
+                                            role="tab"
+                                            aria-controls={"#" + index}
+                                            aria-selected="false"
+                                        >
+                                            {item}
+                                        </a>
+                                    </Fragment>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="col-sm-12 col-md-8">
+                            <div className="tab-content" id="v-pills-tabContent">
+                                {title.map((item, index) => (
+                                    <Fragment>
+                                        <div
+                                            key={index}
+                                            class={index == step ? "tab-pane fade show active" : "tab-pane fade"}
+                                            id={"tab_" + index}
+                                            role="tabpanel"
+                                            aria-labelledby="v-pills-home-tab"
+                                        >
+                                            <h1 className="display-4 mb-3">{item}</h1>
+
+                                            {pintarPreguntas(index)}
+                                            {index < 3 && (
+                                                <a
+                                                    onClick={() => handlesetStep(index + 1)}
+                                                    data-toggle="pill"
+                                                    role="tab"
+                                                    aria-controls={"#" + index}
+                                                    aria-selected="false"
+                                                    className="btn btn-secondary btn-block">Siguiente
+                                                </a>
+                                            )}
+                                        </div>
+                                    </Fragment>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div >
+        </Fragment >
+    )
+}
 
 
 const mapStateToProps = ({ Auth }) => {

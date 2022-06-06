@@ -28,6 +28,10 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix' => 'v1'], function () {
     Route::post('/getHistoryStudent', 'SurveyRecordsController@getHistoryStudent');
     Route::post('/answerQuestion', 'SurveyRecordsController@answerQuestion');
     Route::get('/printQr/{id}', 'SurveyRecordsController@printQr');
+    Route::post('/getAnswersUser', 'SurveyRecordsController@getAnswersUser');
+
+    //question
+    Route::get('/getQuestion', 'universityCareersController@getQuestion');
 });
 Route::prefix('v1')->group(function () {
     Route::post('/authenticate', 'AuthController@authenticate');

@@ -12,6 +12,7 @@ import Login from '../Views/Login'
 import ViewRecoveryPassword from '../Views/ViewRecoveryPassword'
 import NoMatch from "../Helpers/NoMatch";
 import ViewRegisterStudent from "../Views/ViewRegisterStudent";
+import ViewQrScanner from "../Views/ViewQrScanner";
 /**Routing */
 import RoutingUser from './RoutingUser';
 import RoutingQuestion from "./RoutingQuestion";
@@ -20,6 +21,7 @@ const Routing = () => {
 
         <BrowserRouter>
             <Switch>
+                <Route exact path="/qrScanner" component={ViewQrScanner} />
                 <DenyAccessAuthenticated exact path="/" component={Login} />
                 <DenyAccessAuthenticated path="/login" component={Login} />
                 <DenyAccessAuthenticated path="/register" component={ViewRegisterStudent} />

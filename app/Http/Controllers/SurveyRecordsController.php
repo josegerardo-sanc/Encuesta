@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\SurveyRecords;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Traits\Helper;
+use App\Questions;
+use App\AnswersUser;
+use App\SurveyRecords;
 
 class SurveyRecordsController extends Controller
 {
@@ -17,7 +19,7 @@ class SurveyRecordsController extends Controller
     public $idUser;
     public $nameUser;
     public $configPercentaje = null;
-
+    const TITULOS = ['1' => "Antecedentes", '2' => "Diagnostico", '3' => "Contacto Social", '4' => "Factores de riesgo"];
     public function __construct()
     {
         $this->idUser = null;
@@ -27,6 +29,7 @@ class SurveyRecordsController extends Controller
         }
 
         $this->configPercentaje = 80;
+        $this->answerUserArray = [];
     }
 
 
@@ -38,9 +41,6 @@ class SurveyRecordsController extends Controller
     public function  answerQuestion(Request $request)
     {
         try {
-
-            $passingPercentage = $request->get('percentaje');
-
             $idUser = $this->idUser;
             $continue = true;
 
@@ -56,8 +56,19 @@ class SurveyRecordsController extends Controller
                 $days = $interval->format('%d');
                 $dayConfig = intval(7);
                 $continue = $days > $dayConfig ? true : false;
+
+                $continue = true;
             }
 
+            $passingPercentage = $this->getResultQuestion($request);
+
+            if (isset($passingPercentage['status'])) {
+                return \response()->json($passingPercentage);
+            }
+
+            $passingPercentage = \round($passingPercentage);
+
+            //return \response()->json($passingPercentage);
 
             if ($continue) {
                 DB::beginTransaction();
@@ -65,18 +76,30 @@ class SurveyRecordsController extends Controller
                 $surveyRecords->id_users = $idUser;
                 $surveyRecords->percentage = $passingPercentage;
                 $surveyRecords->save();
+
+
+                $idRecords = $surveyRecords->{'id_survey_records'};
+
+                foreach ($this->answerUserArray as $key => $item) {
+                    $answersUser = new AnswersUser;
+                    $answersUser->id_survey_records = $idRecords;
+                    $answersUser->id_question = $item['id'];
+                    $answersUser->answers = $item['answer'];
+                    $answersUser->save();
+                }
+
                 DB::commit();
-                $message = "En este momento su situación no requiere asistencia sanitaria. 
-                            Recuerde seguir manteniendo las recomendaciones generales de distanciamiento social, 
+                $message = "En este momento su situación no requiere asistencia sanitaria.
+                            Recuerde seguir manteniendo las recomendaciones generales de distanciamiento social,
                             higiene y protección recomendadas.";
 
                 if ($passingPercentage < $this->configPercentaje) {
 
-                    $message = "La COVID-19 se presenta como una enfermedade aguda, 
-                                por lo tanto los síntomas que presenta en este momento podrían deberse a otra causa diferente del nuevo coronavirus. 
-                                Solicite cita en su centro de salud para que valoren sus síntomas. 
+                    $message = "La COVID-19 se presenta como una enfermedade aguda,
+                                por lo tanto los síntomas que presenta en este momento podrían deberse a otra causa diferente del nuevo coronavirus.
+                                Solicite cita en su centro de salud para que valoren sus síntomas.
                                 Por favor,
-                                recuerde que cualquier persona con síntomas compatibles con la Covid debe quedarse en su domicilio y 
+                                recuerde que cualquier persona con síntomas compatibles con la Covid debe quedarse en su domicilio y
                                 limitar los contactos con otras personas";
 
                     return response()->json(['message' => $message, 'status' => 400]);
@@ -115,7 +138,8 @@ class SurveyRecordsController extends Controller
                     'students.semester',
                     'students.school_shift',
                     'students.id_students',
-                    'survey_records.percentage'
+                    'survey_records.percentage',
+                    'survey_records.created_at'
                 )
                 ->where('survey_records.id_users', $idUser)
                 ->where('survey_records.id_survey_records', $id)
@@ -138,7 +162,8 @@ class SurveyRecordsController extends Controller
                     'carrera' => $surveyRecords['carrera'],
                     'school_shift' => $surveyRecords['school_shift'], //turno
                     'semester' => $surveyRecords['semester'],
-                    'id_students' => $surveyRecords['id_students']
+                    'id_students' => $surveyRecords['id_students'],
+                    'fecha_creacion' => $surveyRecords['created_at']
                 ];
                 $pdf = PDF::loadView('QR/success', compact('data', 'qrcode'));
                 return $pdf->download('qr.pdf');
@@ -335,6 +360,132 @@ class SurveyRecordsController extends Controller
                 'totalRows' => $totalRows,
                 'configPercentaje' => $this->configPercentaje
             ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => $this->ERROR_SERVER_MSG . " ,Exception:" . $e->getMessage(),
+                'status' => 400
+            ]);
+        }
+    }
+
+
+    public function getResultQuestion($request)
+    {
+        $title = self::TITULOS;
+        $questions = Questions::orderBy('id', 'asc')->get();
+
+        if (!count($questions) > 0) {
+            return [
+                'status' => 400,
+                'message' => "Lo sentimos pero no hay preguntas cargadas al sistema, comunicate con el administrador."
+            ];
+        }
+
+        $numberQuestions = count($questions);
+        $valueAnswer = (100 / $numberQuestions);
+        $answerResult = [];
+        $totalResult = 0;
+
+        foreach ($questions as $item) {
+
+            $id = $item['id'];
+
+            $inputBd = "selected";
+            $titleSection = "";
+            $questionDB = "";
+
+            $answersUser = $request->get($id);
+            $selected_date = null;
+            $answerDB = $item['answer'];
+
+            if ($request->has($id)) {
+                $inputBd = $item['input'];
+                $index = $item['type'];
+                $titleSection = $title[$index] . ":";
+                $questionDB = $item['question'];
+                $selected_date = $item['selected_date'];
+            }
+
+            if (!empty($selected_date)) {
+                if ($answersUser == "si") {
+                    $date = $request->get('selected_date');
+                    if (empty($date)) {
+                        return [
+                            'status' => 400,
+                            'message' => "{$titleSection} {$questionDB} (Favor de selecionar la fecha)"
+                        ];
+                    }
+                }
+            }
+
+
+            $error = false;
+            if ($inputBd == "selected" && $answersUser == "0") {
+                $error = true;
+            }
+            if ($error) {
+                return [
+                    'status' => 400,
+                    'message' => "Te falta responder una pregunta del apartado :{$titleSection}"
+                ];
+            }
+
+
+            if ($inputBd == "selected") {
+
+                $lowerCase = [];
+                $answersArray = json_decode($answerDB, true);
+                foreach ($answersArray as $value) {
+                    $lowerCase[] = strtolower($value);
+                }
+
+                if (\in_array(strtolower($answersUser), $lowerCase)) {
+                    $totalResult += $valueAnswer;
+                }
+            } else {
+                $totalResult += $valueAnswer;
+            }
+
+            $answerResult[] = [
+                'id' => $id,
+                'answer' => $answersUser
+            ];
+        }
+
+        $this->answerUserArray = $answerResult;
+
+        return $totalResult;
+    }
+
+
+    public function getAnswersUser(Request $request)
+    {
+        try {
+            $title = self::TITULOS;
+            $id = $request->get('id_survey_records');
+            $questions = SurveyRecords::query();
+
+            $answersUser = $questions->join('answers_users', 'answers_users.id_survey_records', '=', 'survey_records.id_survey_records')
+                ->join('questions', 'answers_users.id_question', '=', 'questions.id')
+                ->where('survey_records.id_survey_records', $id)
+                ->select('answers_users.answers', 'questions.question', 'questions.input', 'questions.type', 'questions.id')
+                ->get();
+
+            if (!count($answersUser) > 0) {
+                return [
+                    'status' => 400,
+                    'message' => "Lo sentimos pero no encontramos la encuesta solcitada, comunicate con el administrador."
+                ];
+            }
+
+            //dd($answersUser);
+            return  \response()->json([
+                'status' => 200,
+                'data' => $answersUser
+            ]);
+
+            /*--------------------------- */
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([

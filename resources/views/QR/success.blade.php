@@ -80,6 +80,11 @@
         <tbody>
             <tr>
                 <td colspan="2">
+                    <strong> Fecha de registro:</strong> {{ $data['fecha_creacion'] }}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
                     <strong> Nombre:</strong> {{ $data['full_name'] }}
                 </td>
             </tr>
@@ -104,7 +109,8 @@
                 </tr>
             @endif
             <tr>
-                <img style="margin-top: 30" src="data:image/png;base64, {!! $qrcode !!}">
+                <img style="margin-top: 30;height:450px;width:500px"
+                    src="data:image/png;base64, {!! $qrcode !!}">
             </tr>
         </tbody>
     </table>
