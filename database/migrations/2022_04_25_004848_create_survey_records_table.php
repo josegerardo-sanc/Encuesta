@@ -17,6 +17,8 @@ class CreateSurveyRecordsTable extends Migration
             $table->bigIncrements('id_survey_records');
             $table->unsignedBigInteger('id_users')->comment('id users');
             $table->foreign('id_users')->references('id_users')->on('users');
+            $table->unsignedBigInteger('id_university_careers')->comment('id users');
+            $table->foreign('id_university_careers')->references('id_university_careers')->on('university_careers');
             $table->string('percentage');
             $table->timestamps();
         });

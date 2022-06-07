@@ -32,6 +32,8 @@ Route::group(['middleware' => ['jwt.verify'], 'prefix' => 'v1'], function () {
 
     //question
     Route::get('/getQuestion', 'universityCareersController@getQuestion');
+    /**getGraphics */
+    Route::get('/getGraphics', 'SurveyRecordsController@getGraphics');
 });
 Route::prefix('v1')->group(function () {
     Route::post('/authenticate', 'AuthController@authenticate');

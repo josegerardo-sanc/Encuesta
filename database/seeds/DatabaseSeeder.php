@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
-
+use App\Student;
 
 class DatabaseSeeder extends Seeder
 {
@@ -56,6 +56,22 @@ class DatabaseSeeder extends Seeder
 
         $user_1->syncRoles(['Administrador']);
         $user_2->syncRoles(['Alumno']);
+
+
+        $this->call(UserSeeder::class);
+
+        for ($i = 3; $i <= 102; $i++) {
+            $user = App\User::find($i);
+            $user->syncRoles(['Alumno']);
+
+            $student = new Student;
+            $student->matricula = "14E30" . $i;
+            $student->id_users = $i;
+            $student->id_university_careers = rand(1, 6);
+            $student->semester = "1 SEMESTRE";
+            $student->school_shift = "";
+            $student->save();
+        }
 
         /**historial */
         App\Questions::insert([

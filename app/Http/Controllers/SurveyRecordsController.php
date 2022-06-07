@@ -10,6 +10,9 @@ use App\Traits\Helper;
 use App\Questions;
 use App\AnswersUser;
 use App\SurveyRecords;
+use App\universityCareers;
+use App\User;
+use App\Student;
 
 class SurveyRecordsController extends Controller
 {
@@ -42,6 +45,13 @@ class SurveyRecordsController extends Controller
     {
         try {
             $idUser = $this->idUser;
+
+            $id_university_careers = 7;
+            $student = Student::where('id_users', $idUser)->first();
+            if (!empty($student)) {
+                $id_university_careers = $student->{'id_university_careers'};
+            }
+
             $continue = true;
 
             $surveyRecords = SurveyRecords::where('id_users', $idUser)
@@ -74,6 +84,7 @@ class SurveyRecordsController extends Controller
                 DB::beginTransaction();
                 $surveyRecords = new SurveyRecords();
                 $surveyRecords->id_users = $idUser;
+                $surveyRecords->id_university_careers = $id_university_careers;
                 $surveyRecords->percentage = $passingPercentage;
                 $surveyRecords->save();
 
@@ -484,6 +495,55 @@ class SurveyRecordsController extends Controller
                 'status' => 200,
                 'data' => $answersUser
             ]);
+
+            /*--------------------------- */
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => $this->ERROR_SERVER_MSG . " ,Exception:" . $e->getMessage(),
+                'status' => 400
+            ]);
+        }
+    }
+
+    public function getGraphics()
+    {
+        try {
+
+            /**encuesta por carrera */
+
+            /*
+            select uni.name,count(stu.id_university_careers) from students  as stu
+                join university_careers as uni on stu.id_university_careers=uni.id_university_careers
+                group by stu.id_university_careers
+                ;
+             */
+            $studentCareers = DB::table('students')
+                ->rightJoin('university_careers', 'students.id_university_careers', '=', 'university_careers.id_university_careers')
+                ->groupBy('students.id_university_careers')
+                ->select(DB::raw('count(students.id_university_careers) as total'), 'university_careers.name')
+                ->get();
+
+            /**encuestas contestadas por carrera */
+            /*
+            select *,count(sur.id_university_careers) from university_careers as uni
+            left join survey_records as sur on uni.id_university_careers=sur.id_university_careers
+            group by uni.id_university_careers;
+            */
+            $answerCareers = DB::table('university_careers')
+                ->leftJoin('survey_records', 'university_careers.id_university_careers', '=', 'survey_records.id_university_careers')
+                ->groupBy('university_careers.id_university_careers')
+                ->select(DB::raw('count(survey_records.id_university_careers) as total'), 'university_careers.name')
+                ->get();
+
+
+            return  \response()->json([
+                'status' => 200,
+                'answerCareers' => $answerCareers,
+                'studentCareers' => $studentCareers
+            ]);
+
+            //agrupar con carreras
 
             /*--------------------------- */
         } catch (\Exception $e) {

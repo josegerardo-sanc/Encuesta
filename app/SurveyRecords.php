@@ -10,7 +10,8 @@ class SurveyRecords extends Model
     protected $primaryKey = 'id_survey_records';
     protected $fillable = [
         'id_users',
-        'percentage'
+        'percentage',
+        'id_university_careers'
     ];
 
     protected $casts = [

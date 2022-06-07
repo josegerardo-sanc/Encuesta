@@ -13,6 +13,7 @@ import ViewRecoveryPassword from '../Views/ViewRecoveryPassword'
 import NoMatch from "../Helpers/NoMatch";
 import ViewRegisterStudent from "../Views/ViewRegisterStudent";
 import ViewQrScanner from "../Views/ViewQrScanner";
+import ViewGraphics from "../Views/Dashboard/ViewGraphics";
 /**Routing */
 import RoutingUser from './RoutingUser';
 import RoutingQuestion from "./RoutingQuestion";
@@ -26,7 +27,7 @@ const Routing = () => {
                 <DenyAccessAuthenticated path="/login" component={Login} />
                 <DenyAccessAuthenticated path="/register" component={ViewRegisterStudent} />
                 <DenyAccessAuthenticated path="/recovery-password" component={ViewRecoveryPassword} />
-                <AllowAccessAuthenticated exact path={pathDashboard} component={Graficas} />
+                <AllowAccessAuthenticated exact path={pathDashboard} component={ViewGraphics} />
                 <AllowAccessAuthenticated path={`${pathDashboard}/user`} component={RoutingUser} />
                 <AllowAccessAuthenticated path={`${pathDashboard}/question`} component={RoutingQuestion} />
                 <Route path="*" component={NoMatch} />
@@ -36,20 +37,7 @@ const Routing = () => {
 }
 
 
-const Graficas = () => {
 
-    useEffect(() => {
-        document.getElementById('title_module').innerText = "Graficas";
-    }, [])
-
-    return (
-        <div className="card">
-            <div className="card-body">
-                Graficas
-            </div>
-        </div>
-    )
-}
 
 /*connection with redux */
 const mapStateToProps = ({ Auth }) => {

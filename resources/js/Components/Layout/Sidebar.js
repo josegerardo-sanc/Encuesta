@@ -107,14 +107,13 @@ const handleCollapse = (e) => {
 const Administrador = () => {
     return (
         <Fragment>
-            {/*
             <li>
                 <Navitem to={''}>
                     <i className="fas fa-grip-horizontal"></i>
-                    <span>Inicio</span>
+                    <span>Graficas</span>
                 </Navitem>
             </li>
-            */}
+
             <li>
                 <Navitem to={`/user`}>
                     <i className="fas fa-users"></i>
