@@ -90159,7 +90159,15 @@ var Login = function Login(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "btn btn-link",
     type: "button"
-  }, "Registrate")))));
+  }, "Registrate"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "mt-4"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
+    to: "/controlAcceso",
+    className: "text-link font-weight-bold"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "btn-block btn btn btn-link",
+    type: "button"
+  }, "Escanear Qr")))));
 };
 
 var mapDispatchToProps = {

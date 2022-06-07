@@ -162,6 +162,13 @@ const Login = ({
                         </button>
                     </Link>
                 </div>
+                <div className="mt-4">
+                    <Link to="/controlAcceso" className="text-link font-weight-bold">
+                        <button className="btn-block btn btn btn-link" type="button">
+                            Escanear Qr
+                        </button>
+                    </Link>
+                </div>
             </form >
         </Fragment>
     )
