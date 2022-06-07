@@ -22,7 +22,7 @@ const Routing = () => {
 
         <BrowserRouter>
             <Switch>
-                <Route exact path="/qrScanner" component={ViewQrScanner} />
+                <Route exact path="/controlAcceso" component={ViewQrScanner} />
                 <DenyAccessAuthenticated exact path="/" component={Login} />
                 <DenyAccessAuthenticated path="/login" component={Login} />
                 <DenyAccessAuthenticated path="/register" component={ViewRegisterStudent} />

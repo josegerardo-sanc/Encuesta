@@ -43,4 +43,5 @@ Route::prefix('v1')->group(function () {
     Route::post('/saveUser', 'User\UserController@saveUser');
     #app/Http/Controllers/universityCareersController.php
     Route::get('getCareers', 'universityCareersController@getCareers');
+    Route::get('getAccess/{id}', 'universityCareersController@getAccess');
 });

@@ -56,6 +56,8 @@
             $('#myModalStatus').modal('show')
         })
     </script>
+
+    <audio autoplay="false" id="sound_scaner" src={{ URL::asset('audio.mp3') }}></audio>
 </body>
 
 

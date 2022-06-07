@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Http\Request;
 use App\universityCareers;
 use App\Questions;
+use App\SurveyRecords;
 
 class universityCareersController extends Controller
 {
@@ -42,5 +45,37 @@ class universityCareersController extends Controller
                 'status' => 400
             ]);
         }
+    }
+
+
+    public function getAccess($id)
+    {
+        $data = SurveyRecords::where('id_survey_records', $id)->first();
+
+        if (empty($data)) {
+            return \response()->json([
+                'status' => 400,
+                'message' => "Lo sentimos no encontramos información relacionada con este Qr"
+            ]);
+        }
+
+        $studentCareers = DB::table('survey_records')
+            ->join('students', 'survey_records.id_users', '=', 'students.id_users')
+            ->join('users', 'students.id_users', '=', 'users.id_users')
+            ->join('university_careers', 'students.id_university_careers', '=', 'university_careers.id_university_careers')
+            ->where('survey_records.id_survey_records', "=", $id)
+            ->select(
+                DB::raw('CONCAT(users.name," ",users.last_name," ",users.second_last_name) AS full_name'),
+                'university_careers.name',
+                'students.matricula',
+                'survey_records.created_at'
+            )
+            ->get();
+
+
+        return \response()->json([
+            'status' => 200,
+            'data' => $studentCareers[0]
+        ]);
     }
 }
