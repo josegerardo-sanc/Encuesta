@@ -9,6 +9,7 @@ import { pathApi } from '../env'
 import AlertMessageSingular from "../Helpers/AlertMessageSingular";
 import { fetchRequest } from '../Redux/Actions/fetchRequest'
 import imageProfileDefault from '../Components/Layout/imageProfileDefault.png';
+import { split } from "lodash";
 
 const ViewQrScanner = ({
     Auth,
@@ -26,7 +27,8 @@ const ViewQrScanner = ({
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 }
-            }
+            },
+            'showLoader': false
         };
 
 
@@ -77,11 +79,15 @@ const ViewQrScanner = ({
 
         function setResult(label, result) {
             console.log(result.data);
+            let value = result.data.split("|");
+            if (value != null) {
+                if (codeQr != value[0]) {
+                    document.getElementById('sound_scaner').play();
+                    console.log(value)
+                    handleScaner(value[0]);
+                    codeQr = value[0]
+                }
 
-            if (codeQr != result.data) {
-                document.getElementById('sound_scaner').play();
-                handleScaner(result.data);
-                codeQr = result.data;
             }
 
             //label.textContent = result.data;

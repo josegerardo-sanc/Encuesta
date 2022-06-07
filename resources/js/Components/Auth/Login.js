@@ -16,6 +16,8 @@ const Login = ({
     saveSesionAuth,
     fetchRequest
 }) => {
+
+    const [typeUser, setTypeUser] = useState("Matricula")
     const [responseMessage, setResponseMessage] = useState({})
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState({
@@ -47,6 +49,7 @@ const Login = ({
 
 
     const handleClickSubmit = async () => {
+
         let request = {
             'url': `${pathApi}/authenticate`,
             'request': {
@@ -55,7 +58,7 @@ const Login = ({
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify({ ...data, 'type': typeUser })
             },
             'showMessage': true
         };
@@ -80,13 +83,25 @@ const Login = ({
         }
     }
 
+    const handleChangeInputType = (e) => {
+        setTypeUser(e.target.value);
+    }
+
     return (
 
         <Fragment>
             <AlertMessageSingular {...responseMessage} />
             <form className="form-horizontal" action="index">
                 <div className="form-group">
-                    <label htmlFor="email">Correo electrónico</label>
+                    <label >Tipo de usuario</label>
+                    <select className="form-control" value={typeUser} onChange={handleChangeInputType}>
+                        <option value={0} disabled>Selecione una opción</option>
+                        <option value={"Matricula"}>Alumno</option>
+                        <option value={"Correo"}>Administrador</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="email">{typeUser}</label>
                     <div className="input-group mb-0">
                         <div className="input-group-prepend">
                             <span className="input-group-text" >
@@ -99,7 +114,7 @@ const Login = ({
                             onKeyPress={handleonKeyPress}
                             type="text"
                             className="form-control" id="email"
-                            placeholder="Correo electrónico"
+                            placeholder={typeUser}
                             maxLength={100}
                         />
                     </div>

@@ -165,7 +165,8 @@ class SurveyRecordsController extends Controller
                     ]);
                 }
 
-                $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate($id));
+                $concact_qr_code = $id . "|" . $this->nameUser . "|" . date('Y-m-d');
+                $qrcode = base64_encode(QrCode::format('svg')->size(200)->errorCorrection('H')->generate($concact_qr_code));
 
                 $data = [
                     'full_name' => ucwords($surveyRecords['name']) . " " . ucwords($surveyRecords['last_name']) . " " . ucwords($surveyRecords['second_last_name']),
@@ -435,6 +436,16 @@ class SurveyRecordsController extends Controller
             if ($inputBd == "selected" && $answersUser == "0") {
                 $error = true;
             }
+
+            if ($inputBd == "date") {
+                if (empty($answersUser)) {
+                    return [
+                        'status' => 400,
+                        'message' => "Debes seleccionar una fecha del apartado :{$titleSection}"
+                    ];
+                }
+            }
+
             if ($error) {
                 return [
                     'status' => 400,

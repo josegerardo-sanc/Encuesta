@@ -60,7 +60,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UserSeeder::class);
 
-        for ($i = 3; $i <= 102; $i++) {
+        for ($i = 2; $i <= 102; $i++) {
             $user = App\User::find($i);
             $user->syncRoles(['Alumno']);
 
@@ -75,6 +75,13 @@ class DatabaseSeeder extends Seeder
 
         /**historial */
         App\Questions::insert([
+            [
+                'input' => "date",
+                'question' => "Encuesta contestada previo a la semana",
+                'selectionAnswer' => null,
+                'answer' => null,
+                "type" => 1
+            ],
             [
                 'input' => "selected",
                 'question' => "Has padecido COVID-19 anteriormente",
@@ -135,6 +142,13 @@ class DatabaseSeeder extends Seeder
 
         /**diagnostico */
         App\Questions::insert([
+            [
+                'input' => "date",
+                'question' => "Encuesta contestada previo a la semana",
+                'selectionAnswer' => null,
+                'answer' => null,
+                "type" => 2
+            ],
             [
                 'input' => "selected",
                 'question' => "presentaste tos durante esta semana",
@@ -257,6 +271,13 @@ class DatabaseSeeder extends Seeder
         /**contacto social */
         App\Questions::insert([
             [
+                'input' => "date",
+                'question' => "Encuesta contestada previo a la semana",
+                'selectionAnswer' => null,
+                'answer' => null,
+                "type" => 3
+            ],
+            [
                 'input' => "selected",
                 'question' => "en los últimos 7 días estuviste en contacto con alguna persona sospechosa o confirmado con la enfermedad COVID-19",
                 'selectionAnswer' => json_encode(["si", "no"]),
@@ -325,6 +346,13 @@ class DatabaseSeeder extends Seeder
         /**factores de riesgo */
 
         App\Questions::insert([
+            [
+                'input' => "date",
+                'question' => "Encuesta contestada previo a la semana",
+                'selectionAnswer' => null,
+                'answer' => null,
+                "type" => 4
+            ],
             [
                 'input' => "selected",
                 'question' => "Eres diabetcico",

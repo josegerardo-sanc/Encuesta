@@ -51,16 +51,35 @@ class AuthController extends Controller
             $request->all()
         ]);*/
 
-        $validator = Validator::make($request->all(), [
+        $validations = [
             'email' => 'required|email',
             'password' => 'required',
             'remember_session' => 'required|boolean',
-        ], [
+        ];
+        $messages = [
             'email.required' => 'El correo es obligatorio.',
             'email.email' => 'Correo electrónico no válido.',
             'password.required' => 'La contraseña es obligatoria',
             'remember_session.boolean' => 'Marque la casilla.',
-        ]);
+        ];
+
+        if ($request->get('type') == "Matricula") {
+            $validations['email'] = [
+                'required',
+                'regex:/[0-9]{2}/',
+                'regex:/[Ee]{1}/',
+                'regex:/[0-9]{5}/',
+            ];
+
+            $messages = [
+                'email.required' => 'La matricula es obligatorio.',
+                'email.regex' => 'El formato de la matricula es inválido.',
+                'password.required' => 'La contraseña es obligatoria',
+                'remember_session.boolean' => 'Marque la casilla.',
+            ];
+        }
+
+        $validator = Validator::make($request->all(), $validations, $messages);
 
         /*
         $validator->after(function ($validator) {
@@ -78,13 +97,37 @@ class AuthController extends Controller
         }
 
         $credentials = $request->only('email', 'password');
-        $user = User::where('email', $credentials['email'])->first();
+        //return \response()->json($credentials);
+        $usuario = $credentials['email'];
+        if ($request->get('type') == "Matricula") {
+            $student = \App\Student::where('matricula', $usuario)->first();;
+            if (empty($student)) {
+                return response()->json([
+                    'message' => 'Credenciales invalidas.',
+                    'status' => 400,
+                    'message_tecnico' => "no se encontro el estudiante con la credencial" . $usuario
+                ]);
+            }
 
+            $id_user_ = $student->{'id_users'};
+            $userStudent = User::where('id_users', $id_user_)->first();
+            $usuario = $userStudent->{'email'};
+        }
 
-        if (!$user) {
+        //return \response()->json($usuario);
+        $user = User::where('email', $usuario)->first();
+
+        /*
+         return response()->json([
+            $user, $usuario
+        ]);
+        */
+
+        if (empty($user)) {
             return response()->json([
                 'message' => 'Credenciales invalidas.',
                 'status' => 400,
+                'message_tecnico' => "no se encontro el usuario con la credencial" . $usuario
             ]);
         }
 
@@ -102,7 +145,7 @@ class AuthController extends Controller
         }
 
         try {
-            if ($token = JWTAuth::attempt($credentials)) {
+            if ($token = JWTAuth::attempt(['email' => $usuario, 'password' => $credentials['password']])) {
                 $remember_session = $request->get('remember_session') === true ? true : false;
                 $data = $this->respondWithToken($token, $user, $remember_session);
                 $name = $user['name'];
@@ -111,6 +154,7 @@ class AuthController extends Controller
                 return response()->json([
                     'message' => 'Credenciales invalidas.',
                     'status' => 400,
+                    'message_tecnico' => "error en credenciales para jwt"
                 ]);
             }
         } catch (\Exception $e) {

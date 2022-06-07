@@ -103,7 +103,7 @@ const Question = ({
                 </select>
             )
         } else {
-            return <input className="form-control" type="text" name={quest.id} key={quest.id} placeholder="" />
+            return <input className="form-control" type={quest.input} name={quest.id} key={quest.id} placeholder="" />
         }
     }
 
