@@ -133,7 +133,7 @@ class DatabaseSeeder extends Seeder
                 "type" => 1
             ], [
                 'input' => "text",
-                'question' => "Has padecido COVID-19 anteriormente",
+                'question' => "Como consideras que puedes proteger a tu familia de la enfermedad COVID-19",
                 'selectionAnswer' => null,
                 'answer' => null,
                 "type" => 1
