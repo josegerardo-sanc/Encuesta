@@ -61,11 +61,16 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
 
         for ($i = 2; $i <= 102; $i++) {
+
             $user = App\User::find($i);
             $user->syncRoles(['Alumno']);
-
             $student = new Student;
-            $student->matricula = "14E30" . $i;
+
+            $matricula = "14E30" . $i;
+            if ($i == 2) {
+                $matricula = "16E30349";
+            }
+            $student->matricula = $matricula;
             $student->id_users = $i;
             $student->id_university_careers = rand(1, 6);
             $student->semester = "1 SEMESTRE";

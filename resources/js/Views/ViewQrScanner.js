@@ -10,6 +10,7 @@ import AlertMessageSingular from "../Helpers/AlertMessageSingular";
 import { fetchRequest } from '../Redux/Actions/fetchRequest'
 import imageProfileDefault from '../Components/Layout/imageProfileDefault.png';
 import { split } from "lodash";
+import { Link } from "react-router-dom";
 
 const ViewQrScanner = ({
     Auth,
@@ -190,6 +191,13 @@ const ViewQrScanner = ({
 
     return (
         <Fragment>
+            <nav className="navbar navbar-dark  justify-content-end" style={{ backgroundColor: "#916730" }}>
+                <Link to="/" className="btn btn-link text-muted">
+                    <a className="navbar-brand" >
+                        Iniciar sesión
+                    </a>
+                </Link>
+            </nav>
             <Preloader></Preloader>
             <div className="container">
                 <div className="row">
@@ -197,18 +205,16 @@ const ViewQrScanner = ({
                         <AlertMessageSingular {...responseReq}></AlertMessageSingular>
                     </div>
                     <div className="col-sm-12">
-                        <h1 className="display-4">Control de acceso</h1>
+                        <h1 className="display-4 mt-4 mb-4 text-center">Control de acceso</h1>
                         <div id="video-container" style={{ height: "auto" }}>
-                            <video id="qr-video" style={{ height: "400px" }}></video>
+                            <video id="qr-video" style={{ height: "400px", width: '100%' }}></video>
                         </div>
                     </div>
-                    <div className="col-sm-12">
-                        <button type="button" className="btn-block btn btn-primary" id="start-button">Escanear nuevamente</button>
-                    </div>
+
 
                     <div className="col-sm-12 mt-4">
                         <table class="table">
-                            <thead>
+                            <thead className="btn-primary">
                                 <tr>
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Carrera</th>
@@ -239,6 +245,9 @@ const ViewQrScanner = ({
             </div>
 
             <div style={{ display: "none" }}>
+                <div className="col-sm-12">
+                    <button type="button" className="btn-block btn btn-primary" id="start-button">Escanear nuevamente</button>
+                </div>
                 <span id="cam-has-camera"></span>
                 <div>
                     <select id="inversion-mode-select">
