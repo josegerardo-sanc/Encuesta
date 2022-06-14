@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Middleware\JwtMiddleware;
+use App\ChekInTime;
 
 class AuthController extends Controller
 {
@@ -149,7 +150,18 @@ class AuthController extends Controller
                 $remember_session = $request->get('remember_session') === true ? true : false;
                 $data = $this->respondWithToken($token, $user, $remember_session);
                 $name = $user['name'];
-                return response()->json(['data' => $data, 'status' => 200, 'message' => "Qué bueno verte de nuevo {$name} ."]);
+
+                $startDate = date("Y-m-d H:i:s");
+                $chekInTime = new ChekInTime();
+                $chekInTime->{'id_user'} = $user['id_users'];
+                $chekInTime->{'date_start'} = $startDate;
+                $chekInTime->save();
+
+                return response()->json([
+                    'data' => $data,
+                    'status' => 200, 'message' => "Qué bueno verte de nuevo {$name} .",
+                    'singUp' => $startDate
+                ]);
             } else {
                 return response()->json([
                     'message' => 'Credenciales invalidas.',
@@ -404,5 +416,35 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json($this->_jwtMiddleware->getErrorJwt($e));
         }
+    }
+
+
+    public function getCheckInTime()
+    {
+        try {
+            /*return response()->json(['token'=>auth()->refresh()]);*/
+            $user = JWTAuth::parseToken()->authenticate();
+
+            $id_user = $user['id_users'];
+            $date_start = ChekInTime::where('id_user', $id_user)
+                ->select(DB::raw('max(date_start) as hora'))
+                ->get();
+
+            if (count($date_start) > 0) {
+                return response()->json([
+                    "status" => 200,
+                    "date_start" => date('Y-m-d H:i:s', strtotime($date_start[0]['hora']))
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                "status" => 400,
+                "message" => $e->getMessage()
+            ]);
+        }
+
+        return response()->json([
+            "status" => 400
+        ]);
     }
 }

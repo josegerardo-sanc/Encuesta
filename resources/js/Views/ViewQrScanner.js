@@ -83,6 +83,7 @@ const ViewQrScanner = ({
             let value = result.data.split("|");
             if (value != null) {
                 if (codeQr != value[0]) {
+                    document.getElementById('sound_scaner').muted = false;
                     document.getElementById('sound_scaner').play();
                     console.log(value)
                     handleScaner(value[0]);
@@ -185,6 +186,9 @@ const ViewQrScanner = ({
                 .catch(e => setResult(fileQrResult, { data: e || 'No QR code found.' }));
         });
          */
+        return () => {
+            scanner.stop();
+        };
 
     }, [])
 

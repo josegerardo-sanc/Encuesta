@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    <link href="{{ URL::asset('css/bootstrap-dark.min.css') }}" id="bootstrap-dark" rel="stylesheet"
-        type="text/css" />
+    <link href="{{ URL::asset('css/bootstrap-dark.min.css') }}" id="bootstrap-dark" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('css/bootstrap.min.css') }}" id="bootstrap-light" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('css/app-rtl.min.css') }}" id="app-rtl" rel="stylesheet" type="text/css" />
@@ -30,23 +29,23 @@
     session_start();
     ?>
     @isset($_SESSION['status'])
-        <div class="modal fade show" tabindex="-1" id="myModalStatus">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <h3>{{ $_SESSION['status'] }}</h3>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
+    <div class="modal fade show" tabindex="-1" id="myModalStatus">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h3>{{ $_SESSION['status'] }}</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
+    </div>
     @endisset
     <?php
     unset($_SESSION['status']);
@@ -57,7 +56,7 @@
         })
     </script>
 
-    <audio autoplay="false" id="sound_scaner" src={{ URL::asset('audio.mp3') }}></audio>
+    <audio autoplay="false" muted="true" id="sound_scaner" src={{ URL::asset('audio.mp3') }}></audio>
 </body>
 
 
